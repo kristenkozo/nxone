@@ -1,16 +1,13 @@
 import { createHmac } from "crypto";
 import { cookies } from "next/headers";
+import { validatePassword } from "./users";
 
 const SECRET = process.env.NXONE_SECRET || "nxone-session-k8s-2026";
 const COOKIE_NAME = "nxone-session";
 const MAX_AGE = 30 * 24 * 60 * 60;
 
-const USERS: Record<string, string> = {
-  kristen: "password123!",
-};
-
 export function validateCredentials(username: string, password: string): boolean {
-  return USERS[username] === password;
+  return validatePassword(username, password);
 }
 
 export function createSessionToken(username: string): string {
