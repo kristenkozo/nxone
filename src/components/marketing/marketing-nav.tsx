@@ -5,230 +5,459 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth-provider";
 import { LoginDialog } from "@/components/login-dialog";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { brands, brandIconBg } from "@/lib/brands";
 import {
+  Activity,
+  ArrowRight,
+  BookOpen,
+  Building2,
   ChevronDown,
-  LayoutDashboard,
-  Rocket,
-  Shield,
-  BarChart3,
+  CircleHelp,
+  Command,
+  History,
+  LayoutGrid,
+  MailOpen,
+  Menu,
+  Newspaper,
+  Plug,
+  ShieldCheck,
+  Sparkles,
+  Tag,
   Users,
-  LogOut,
-  User,
+  X,
 } from "lucide-react";
 
-function NavDropdown({
-  label,
-  children,
-  open,
-  onToggle,
-}: {
-  label: string;
-  children: React.ReactNode;
-  open: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <div className="relative">
-      <button
-        onClick={onToggle}
-        className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-      >
-        {label}
-        <ChevronDown
-          size={14}
-          className={cn("transition-transform", open && "rotate-180")}
-        />
-      </button>
-      {open && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={onToggle} />
-          <div className="absolute left-0 top-full z-50 mt-2 min-w-[280px] rounded-xl border border-border bg-card p-2 shadow-overlay">
-            {children}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
+const nxoneGroups = [
+  {
+    heading: "Platform",
+    items: [
+      {
+        label: "Overview",
+        href: "/",
+        icon: Command,
+        desc: "One front door for every app your team runs.",
+      },
+      {
+        label: "Features",
+        href: "/#features",
+        icon: LayoutGrid,
+        desc: "Launcher, live health, access and audit history.",
+      },
+      {
+        label: "Pricing",
+        href: "/#pricing",
+        icon: Tag,
+        desc: "Simple per-workspace plans, no seat math.",
+      },
+    ],
+  },
+  {
+    heading: "Extend",
+    items: [
+      {
+        label: "Integrations",
+        href: "/#integrations",
+        icon: Plug,
+        desc: "Connect the tools already in your stack.",
+      },
+      {
+        label: "Docs",
+        href: "/#docs",
+        icon: BookOpen,
+        desc: "Register apps, probes and API reference.",
+      },
+      {
+        label: "Changelog",
+        href: "/#changelog",
+        icon: History,
+        desc: "What shipped, release by release.",
+      },
+    ],
+  },
+  {
+    heading: "Proof",
+    items: [
+      {
+        label: "Customers",
+        href: "/#customers",
+        icon: CircleHelp,
+        desc: "Case studies from teams running nxOne.",
+      },
+      {
+        label: "FAQ",
+        href: "/#faq",
+        icon: CircleHelp,
+        desc: "Answers on access, hosting and security.",
+      },
+    ],
+  },
+];
 
-function DropdownItem({
-  href,
-  icon: Icon,
-  title,
-  description,
-  onClick,
-}: {
-  href: string;
-  icon: React.ElementType;
-  title: string;
-  description: string;
-  onClick?: () => void;
-}) {
-  return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className="flex items-start gap-3 rounded-lg p-3 transition-colors hover:bg-surface-sunken"
-    >
-      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-        <Icon size={16} />
-      </div>
-      <div>
-        <p className="text-sm font-medium">{title}</p>
-        <p className="text-xs text-muted-foreground">{description}</p>
-      </div>
-    </Link>
-  );
-}
+const companyGroups = [
+  {
+    heading: "Company",
+    items: [
+      {
+        label: "About",
+        href: "/",
+        icon: Building2,
+        desc: "Why Nevollo builds one platform, seven products.",
+      },
+      {
+        label: "Careers",
+        href: "/",
+        icon: Users,
+        desc: "Open roles across platform, data and design.",
+      },
+    ],
+  },
+  {
+    heading: "Newsroom",
+    items: [
+      {
+        label: "Press & updates",
+        href: "/",
+        icon: Newspaper,
+        desc: "Launches, milestones and company announcements.",
+      },
+      {
+        label: "Contact",
+        href: "/",
+        icon: MailOpen,
+        desc: "Talk to sales, support or the platform team.",
+      },
+    ],
+  },
+  {
+    heading: "Trust",
+    items: [
+      {
+        label: "System status",
+        href: "/admin",
+        icon: Activity,
+        desc: "Live availability for every Nevollo service.",
+      },
+      {
+        label: "Trust center",
+        href: "/",
+        icon: ShieldCheck,
+        desc: "Security posture, privacy and terms.",
+      },
+    ],
+  },
+];
 
 export function MarketingNav() {
   const { user, loading, logout } = useAuth();
   const [loginOpen, setLoginOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [menu, setMenu] = useState<"brands" | "nxone" | "company" | null>(
+    null,
+  );
 
-  const toggle = (key: string) =>
-    setActiveDropdown((prev) => (prev === key ? null : key));
-  const close = () => setActiveDropdown(null);
+  const trigger = (id: "brands" | "nxone" | "company", label: string) => (
+    <button
+      type="button"
+      onClick={() => setMenu((m) => (m === id ? null : id))}
+      className={cn(
+        "flex items-center gap-1.5 rounded-lg px-3 py-2 text-[15px] font-medium transition-all hover:bg-secondary hover:text-foreground",
+        menu === id ? "bg-secondary text-foreground" : "text-muted-foreground",
+      )}
+    >
+      {label}
+      <ChevronDown
+        className={cn(
+          "size-4 opacity-50 transition-transform",
+          menu === id && "rotate-180 opacity-100",
+        )}
+      />
+    </button>
+  );
 
   return (
     <>
-      <nav className="fixed left-1/2 top-4 z-50 -translate-x-1/2">
-        <div className="flex items-center gap-1 rounded-full border border-border bg-card/80 px-2 py-1.5 shadow-raised backdrop-blur-xl">
-          <Link
-            href="/"
-            className="flex items-center gap-2 rounded-full px-3 py-1.5"
-          >
-            <div className="brand-surface flex h-6 w-6 items-center justify-center rounded-md">
-              <span className="text-xs font-bold text-white">n</span>
-            </div>
-            <span className="font-display text-sm font-semibold tracking-tight">
-              nxOne
-            </span>
-          </Link>
+      <header
+        className="sticky top-0 z-50 px-4 pt-4"
+        onMouseLeave={() => setMenu(null)}
+      >
+        <div className="relative mx-auto max-w-7xl rounded-2xl border border-border/60 bg-background/80 shadow-card backdrop-blur-xl">
+          <div className="flex h-16 items-center justify-between px-6">
+            <div className="flex items-center gap-10">
+              <Link href="/" className="group flex items-center gap-2.5">
+                <span className="brand-surface flex h-8 w-8 items-center justify-center rounded-lg text-base font-bold text-primary-foreground shadow-card transition-transform group-hover:scale-105">
+                  n
+                </span>
+                <span className="font-display text-xl font-semibold tracking-tight">
+                  Nevollo
+                </span>
+              </Link>
 
-          <div className="hidden items-center md:flex">
-            <NavDropdown
-              label="Products"
-              open={activeDropdown === "products"}
-              onToggle={() => toggle("products")}
-            >
-              <div className="max-h-[320px] overflow-y-auto">
-                {brands.map((brand) => {
-                  const bg =
-                    brandIconBg[brand.color] ?? "bg-brand-blue";
-                  return (
-                    <a
-                      key={brand.slug}
-                      href={brand.url ?? "#"}
-                      target={brand.url ? "_blank" : undefined}
-                      rel={brand.url ? "noopener noreferrer" : undefined}
-                      onClick={close}
-                      className="flex items-center gap-3 rounded-lg p-3 transition-colors hover:bg-surface-sunken"
-                    >
-                      <div
-                        className={cn(
-                          "flex h-8 w-8 items-center justify-center rounded-md text-xs font-bold text-white",
-                          bg,
-                        )}
-                      >
-                        {brand.initials}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">{brand.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {brand.tagline}
-                        </p>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-            </NavDropdown>
-
-            <NavDropdown
-              label="nxOne"
-              open={activeDropdown === "nxone"}
-              onToggle={() => toggle("nxone")}
-            >
-              <DropdownItem
-                href="/launcher"
-                icon={Rocket}
-                title="Launch Apps"
-                description="Access all Nevollo products"
-                onClick={close}
-              />
-              <DropdownItem
-                href="/admin"
-                icon={LayoutDashboard}
-                title="Admin Console"
-                description="Manage products and services"
-                onClick={close}
-              />
-              <DropdownItem
-                href="/admin"
-                icon={BarChart3}
-                title="Health Status"
-                description="Real-time service monitoring"
-                onClick={close}
-              />
-            </NavDropdown>
-
-            <NavDropdown
-              label="Company"
-              open={activeDropdown === "company"}
-              onToggle={() => toggle("company")}
-            >
-              <DropdownItem
-                href="/"
-                icon={Users}
-                title="About Nevollo"
-                description="Our story and mission"
-                onClick={close}
-              />
-              <DropdownItem
-                href="/"
-                icon={Shield}
-                title="Security"
-                description="Trust and compliance"
-                onClick={close}
-              />
-            </NavDropdown>
-          </div>
-
-          <div className="flex items-center gap-1 pl-2">
-            <ThemeToggle />
-            {!loading && (
-              user ? (
-                <div className="flex items-center gap-1">
-                  <Link
-                    href="/admin"
-                    className="flex items-center gap-1.5 rounded-full bg-surface-sunken px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    <User size={13} />
-                    {user}
-                  </Link>
-                  <button
-                    onClick={logout}
-                    className="rounded-full p-1.5 text-subtle-foreground transition-colors hover:text-foreground"
-                    title="Sign out"
-                  >
-                    <LogOut size={14} />
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setLoginOpen(true)}
-                  className="rounded-full bg-primary px-4 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+              <nav className="hidden items-center gap-1 md:flex">
+                {trigger("brands", "Brands")}
+                {trigger("nxone", "nxOne")}
+                <Link
+                  href="/launcher"
+                  className="rounded-lg px-3 py-2 text-[15px] font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
                 >
-                  Sign In
-                </button>
-              )
-            )}
+                  Launcher
+                </Link>
+                {trigger("company", "Company")}
+              </nav>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Link
+                href="/admin"
+                className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-primary lg:inline-flex"
+              >
+                Admin console
+              </Link>
+              {!loading && (
+                <>
+                  {user ? (
+                    <button
+                      type="button"
+                      onClick={logout}
+                      className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-primary lg:inline-flex"
+                    >
+                      Sign out
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setLoginOpen(true)}
+                      className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-primary lg:inline-flex"
+                    >
+                      Sign in
+                    </button>
+                  )}
+                </>
+              )}
+              <span className="mx-1 hidden h-6 w-px bg-border lg:block" />
+
+              <Link
+                href="/launcher"
+                className="interactive hidden h-10 items-center justify-center rounded-xl bg-primary px-5 text-sm font-semibold tracking-[-0.005em] text-primary-foreground shadow-md hover:bg-primary-hover active:scale-[0.97] sm:inline-flex"
+              >
+                Get started
+              </Link>
+              <button
+                type="button"
+                aria-label="Toggle menu"
+                onClick={() => setMobileOpen((v) => !v)}
+                className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary md:hidden"
+              >
+                {mobileOpen ? (
+                  <X className="size-5" />
+                ) : (
+                  <Menu className="size-5" />
+                )}
+              </button>
+            </div>
           </div>
+
+          {/* Mega dropdown panels */}
+          {menu && (
+            <div className="absolute left-0 right-0 top-full mt-2 hidden rounded-2xl border border-border/60 bg-background shadow-overlay md:block">
+              <div className="px-6 py-7">
+                {menu === "brands" && (
+                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {brands.map((b) => (
+                      <a
+                        key={b.slug}
+                        href={b.url ?? "#"}
+                        target={b.url ? "_blank" : undefined}
+                        rel={b.url ? "noopener noreferrer" : undefined}
+                        onClick={() => setMenu(null)}
+                        className="flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-secondary"
+                      >
+                        <span
+                          className={cn(
+                            "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-primary-foreground",
+                            brandIconBg[b.color] ?? "bg-brand-blue",
+                          )}
+                        >
+                          {b.initials}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-sm font-semibold">
+                            {b.name}
+                          </span>
+                          <span className="block truncate text-xs text-muted-foreground">
+                            {b.tagline}
+                          </span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+
+                {menu === "nxone" && (
+                  <div className="grid gap-8 lg:grid-cols-[1fr_1fr_1fr_0.9fr]">
+                    {nxoneGroups.map((group) => (
+                      <div key={group.heading}>
+                        <p className="px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70">
+                          {group.heading}
+                        </p>
+                        <div className="mt-2 space-y-0.5">
+                          {group.items.map((l) => (
+                            <Link
+                              key={l.label}
+                              href={l.href}
+                              onClick={() => setMenu(null)}
+                              className="group flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-secondary"
+                            >
+                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                                <l.icon className="size-4" />
+                              </span>
+                              <span className="min-w-0">
+                                <span className="block text-sm font-semibold">
+                                  {l.label}
+                                </span>
+                                <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">
+                                  {l.desc}
+                                </span>
+                              </span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className="rounded-2xl border border-border/60 bg-surface p-5">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-card">
+                        <Sparkles className="size-4" />
+                      </span>
+                      <p className="mt-4 text-sm font-semibold">
+                        Start with nxOne free
+                      </p>
+                      <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                        Register your apps, invite the team and watch fleet
+                        health in minutes.
+                      </p>
+                      <Link
+                        href="/launcher"
+                        onClick={() => setMenu(null)}
+                        className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-colors hover:text-primary-hover"
+                      >
+                        Get started
+                        <ArrowRight className="size-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {menu === "company" && (
+                  <div className="grid gap-8 lg:grid-cols-[1fr_1fr_1fr_0.9fr]">
+                    {companyGroups.map((group) => (
+                      <div key={group.heading}>
+                        <p className="px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/70">
+                          {group.heading}
+                        </p>
+                        <div className="mt-2 space-y-0.5">
+                          {group.items.map((l) => (
+                            <Link
+                              key={l.label}
+                              href={l.href}
+                              onClick={() => setMenu(null)}
+                              className="group flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-secondary"
+                            >
+                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                                <l.icon className="size-4" />
+                              </span>
+                              <span className="min-w-0">
+                                <span className="block text-sm font-semibold">
+                                  {l.label}
+                                </span>
+                                <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">
+                                  {l.desc}
+                                </span>
+                              </span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className="rounded-2xl border border-border/60 bg-surface p-5">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-2.5 py-1 text-[11px] font-semibold text-muted-foreground">
+                        <span className="relative flex size-1.5">
+                          <span className="absolute inset-0 animate-ping rounded-full bg-emerald-500/70" />
+                          <span className="relative size-1.5 rounded-full bg-emerald-500" />
+                        </span>
+                        All systems operational
+                      </span>
+                      <p className="mt-4 text-sm font-semibold">
+                        Working at Nevollo
+                      </p>
+                      <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                        Small teams, real ownership, and a platform used by
+                        everyone who builds on it.
+                      </p>
+                      <Link
+                        href="/"
+                        onClick={() => setMenu(null)}
+                        className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-colors hover:text-primary-hover"
+                      >
+                        See open roles
+                        <ArrowRight className="size-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Mobile menu */}
+          {mobileOpen && (
+            <nav className="absolute left-0 right-0 top-full mt-2 max-h-[70vh] overflow-y-auto rounded-2xl border border-border/60 bg-background px-4 py-4 shadow-overlay md:hidden">
+              {[
+                { label: "Brands", href: "/" },
+                { label: "nxOne Overview", href: "/" },
+                { label: "Features", href: "/#features" },
+                { label: "Launcher", href: "/launcher" },
+                { label: "Admin console", href: "/admin" },
+                { label: "About", href: "/" },
+                { label: "Contact", href: "/" },
+              ].map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              {!loading && !user && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setLoginOpen(true);
+                  }}
+                  className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  Sign in
+                </button>
+              )}
+              {!loading && user && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    logout();
+                  }}
+                  className="block w-full rounded-lg px-3 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  Sign out
+                </button>
+              )}
+            </nav>
+          )}
         </div>
-      </nav>
+      </header>
 
       <LoginDialog open={loginOpen} onClose={() => setLoginOpen(false)} />
     </>
