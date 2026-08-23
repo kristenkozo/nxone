@@ -3,6 +3,7 @@ export type AppStatus = "up" | "degraded" | "down" | "unknown";
 export interface AppDefinition {
   id: string;
   name: string;
+  initials: string;
   description: string;
   url: string | null;
   domain: string;
