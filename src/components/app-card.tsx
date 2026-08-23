@@ -1,98 +1,99 @@
 "use client";
 
+import { ArrowUpRight, Lock } from "lucide-react";
 import type { AppDefinition, AppStatus } from "@/types";
 import { cn } from "@/lib/utils";
-import { brandIconBg } from "@/lib/apps";
-import { ArrowUpRight, Lock } from "lucide-react";
 
-const statusConfig: Record<
-  AppStatus,
-  { label: string; dot: string; bg: string; text: string }
-> = {
-  up: { label: "Operational", dot: "bg-status-up", bg: "bg-status-up/10", text: "text-status-up" },
-  degraded: { label: "Degraded", dot: "bg-status-degraded", bg: "bg-status-degraded/10", text: "text-status-degraded" },
-  down: { label: "Unreachable", dot: "bg-status-down", bg: "bg-status-down/10", text: "text-status-down" },
-  unknown: { label: "Unknown", dot: "bg-status-unknown", bg: "bg-status-unknown/10", text: "text-status-unknown" },
+const iconBg: Record<string, string> = {
+  blue: "bg-brand-blue",
+  indigo: "bg-brand-indigo",
+  violet: "bg-brand-violet",
+  emerald: "bg-brand-emerald",
+  amber: "bg-brand-amber",
+  teal: "bg-brand-teal",
+  rose: "bg-brand-rose",
+};
+
+const statusLabel: Record<AppStatus, string> = {
+  up: "Operational",
+  degraded: "Degraded",
+  down: "Unreachable",
+  unknown: "Internal",
+};
+
+const statusColor: Record<AppStatus, string> = {
+  up: "bg-status-up",
+  degraded: "bg-status-degraded",
+  down: "bg-status-down",
+  unknown: "bg-status-unknown",
 };
 
 export function AppCard({
   app,
   status,
+  index = 0,
 }: {
   app: AppDefinition;
   status: AppStatus;
+  index?: number;
 }) {
-  const iconBg = brandIconBg[app.color] ?? "bg-brand-blue";
-  const isClickable = app.url !== null;
-  const sc = statusConfig[status];
+  const clickable = app.url !== null;
+  const Tag = clickable ? "a" : "div";
 
-  const card = (
-    <div
+  return (
+    <Tag
+      {...(clickable
+        ? { href: app.url!, target: "_blank", rel: "noreferrer" }
+        : {})}
       className={cn(
-        "group relative flex flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow-card transition-all duration-200 animate-rise",
-        isClickable &&
-          "cursor-pointer hover:shadow-raised hover:-translate-y-0.5",
+        "animate-rise group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-card transition-all duration-200",
+        clickable &&
+          "hover:-translate-y-1 hover:border-border-strong hover:shadow-raised",
       )}
+      style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className="flex items-start justify-between">
-        <div
+        <span
           className={cn(
-            "flex h-12 w-12 items-center justify-center rounded-xl text-sm font-bold text-white",
-            iconBg,
+            "flex h-12 w-12 items-center justify-center rounded-xl text-sm font-bold text-primary-foreground",
+            iconBg[app.color],
           )}
         >
           {app.initials}
-        </div>
-        <span
-          className={cn(
-            "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium",
-            sc.bg,
-            sc.text,
-          )}
-        >
-          <span className={cn("h-1.5 w-1.5 rounded-full", sc.dot)} />
-          {sc.label}
+        </span>
+        <span className="flex items-center gap-2 rounded-full bg-surface-sunken px-2.5 py-1 text-xs font-medium text-muted-foreground">
+          <span
+            className={cn("h-1.5 w-1.5 rounded-full", statusColor[status])}
+          />
+          {statusLabel[status]}
         </span>
       </div>
 
-      <div className="flex-1">
-        <div className="flex items-center gap-2">
-          <h2 className="text-base font-semibold">{app.name}</h2>
-          {isClickable ? (
-            <ArrowUpRight
-              size={14}
-              className="text-subtle-foreground opacity-0 transition-opacity group-hover:opacity-100"
-            />
-          ) : (
-            <Lock size={12} className="text-subtle-foreground" />
-          )}
-        </div>
-        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-          {app.description}
-        </p>
-      </div>
+      <h3 className="mt-5 flex items-center gap-1.5 text-xl font-semibold">
+        {app.name}
+        {clickable ? (
+          <ArrowUpRight className="size-4 text-subtle-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        ) : (
+          <Lock className="size-3.5 text-subtle-foreground" />
+        )}
+      </h3>
+      <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+        {app.description}
+      </p>
 
-      <div className="flex items-center gap-2">
-        <span className="rounded-md bg-surface-sunken px-2 py-0.5 font-mono text-xs text-subtle-foreground">
+      <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-border pt-4">
+        <span className="font-mono text-xs text-subtle-foreground">
           {app.domain}
         </span>
         {app.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-md bg-surface-sunken px-2 py-0.5 text-xs text-subtle-foreground"
+            className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-accent-foreground"
           >
             {tag}
           </span>
         ))}
       </div>
-    </div>
-  );
-
-  if (!isClickable) return card;
-
-  return (
-    <a href={app.url!} target="_blank" rel="noopener noreferrer">
-      {card}
-    </a>
+    </Tag>
   );
 }

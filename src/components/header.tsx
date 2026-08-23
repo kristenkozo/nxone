@@ -1,56 +1,79 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useAuth } from "./auth-provider";
 import { LoginDialog } from "./login-dialog";
 import { ThemeToggle } from "./theme-toggle";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, ArrowLeft } from "lucide-react";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
   const [loginOpen, setLoginOpen] = useState(false);
 
   return (
-    <header className="flex items-center justify-between px-6 py-6 md:px-8">
-      <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-accent-violet to-accent-blue">
-          <span className="text-lg font-bold text-white">n</span>
-        </div>
-        <div>
-          <h1 className="text-lg font-semibold tracking-tight">nxOne</h1>
-          <p className="text-xs text-text-faint">Nevollo Services</p>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-2">
-        {!loading && (
-          user ? (
-            <div className="flex items-center gap-2">
-              <span className="flex items-center gap-1.5 rounded-lg bg-surface-sunken px-2.5 py-1.5 text-xs font-medium text-text-muted">
-                <User size={13} />
-                {user}
+    <>
+      <header className="border-b border-border bg-background/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+          <div className="flex items-center gap-6">
+            <Link href="/" className="group flex items-center gap-2.5">
+              <span className="brand-surface flex h-8 w-8 items-center justify-center rounded-lg text-base font-bold text-primary-foreground shadow-card transition-transform group-hover:scale-105">
+                n
               </span>
-              <button
-                onClick={logout}
-                className="rounded-lg p-1.5 text-text-faint transition-colors hover:text-text"
-                title="Sign out"
+              <span className="font-display text-xl font-semibold tracking-tight">
+                Nevollo
+              </span>
+            </Link>
+            <span className="hidden h-6 w-px bg-border sm:block" />
+            <nav className="hidden items-center gap-1 sm:flex">
+              <Link
+                href="/launcher"
+                className="rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-foreground"
               >
-                <LogOut size={16} />
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => setLoginOpen(true)}
-              className="rounded-lg bg-surface-sunken px-3 py-1.5 text-xs font-medium text-text-muted transition-colors hover:text-text"
-            >
-              Sign In
-            </button>
-          )
-        )}
-        <ThemeToggle />
-      </div>
+                Launcher
+              </Link>
+              <Link
+                href="/admin"
+                className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                Admin
+              </Link>
+            </nav>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            {!loading && (
+              <>
+                {user ? (
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1.5 rounded-full bg-surface-sunken px-3 py-1.5 text-xs font-medium text-muted-foreground">
+                      <User className="size-3.5" />
+                      {user}
+                    </span>
+                    <button
+                      onClick={logout}
+                      className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                      title="Sign out"
+                    >
+                      <LogOut className="size-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setLoginOpen(true)}
+                    className="interactive h-9 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-md hover:bg-primary-hover active:scale-[0.97]"
+                  >
+                    Sign in
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </header>
 
       <LoginDialog open={loginOpen} onClose={() => setLoginOpen(false)} />
-    </header>
+    </>
   );
 }

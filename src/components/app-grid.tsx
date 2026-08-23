@@ -43,20 +43,20 @@ export function AppGrid() {
   }, [fetchStatus]);
 
   return (
-    <div className="px-6 pb-12 md:px-8">
+    <div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {apps.map((app, i) => (
-          <div key={app.id} style={{ animationDelay: `${i * 60}ms` }}>
-            <AppCard
-              app={app}
-              status={statuses[app.id] ?? "unknown"}
-            />
-          </div>
+          <AppCard
+            key={app.id}
+            app={app}
+            status={statuses[app.id] ?? "unknown"}
+            index={i}
+          />
         ))}
       </div>
 
       {lastUpdated && (
-        <p className="mt-6 text-center text-xs text-text-faint">
+        <p className="mt-6 text-center text-xs text-muted-foreground">
           Status checked{" "}
           <time dateTime={lastUpdated}>
             {new Date(lastUpdated).toLocaleTimeString()}

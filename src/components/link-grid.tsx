@@ -79,20 +79,20 @@ export function LinkGrid() {
   if (!mounted) return null;
 
   return (
-    <div className="px-6 pb-12 md:px-8">
+    <div>
       <div className="mb-5 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <LayoutGrid size={16} className="text-text-faint" />
+          <LayoutGrid size={16} className="text-muted-foreground" />
           <h2 className="text-base font-semibold">My Services</h2>
           {services.length > 0 && (
-            <span className="rounded-full bg-surface-sunken px-2 py-0.5 text-xs text-text-faint">
+            <span className="rounded-full bg-surface-sunken px-2 py-0.5 text-xs text-muted-foreground">
               {services.length}
             </span>
           )}
         </div>
         <button
           onClick={handleAdd}
-          className="flex items-center gap-1.5 rounded-lg bg-accent-violet px-3 py-1.5 text-xs font-medium text-white transition-colors hover:opacity-90"
+          className="interactive flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-md hover:bg-primary-hover active:scale-[0.97]"
         >
           <Plus size={14} />
           Add Service
@@ -124,22 +124,22 @@ export function LinkGrid() {
           ))}
         </div>
       ) : services.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border-subtle py-16">
-          <LayoutGrid size={32} className="mb-3 text-text-faint" />
-          <p className="mb-1 text-sm font-medium text-text-muted">No services yet</p>
-          <p className="mb-5 text-xs text-text-faint">
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-16">
+          <LayoutGrid size={32} className="mb-3 text-muted-foreground" />
+          <p className="mb-1 text-sm font-medium text-muted-foreground">No services yet</p>
+          <p className="mb-5 text-xs text-muted-foreground">
             Add links to your frequently used services and tools.
           </p>
           <button
             onClick={handleAdd}
-            className="flex items-center gap-1.5 rounded-lg bg-accent-violet px-4 py-2 text-sm font-medium text-white transition-colors hover:opacity-90"
+            className="interactive flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md hover:bg-primary-hover active:scale-[0.97]"
           >
             <Plus size={16} />
             Add Service
           </button>
         </div>
       ) : (
-        <p className="py-8 text-center text-sm text-text-faint">
+        <p className="py-8 text-center text-sm text-muted-foreground">
           No services in &quot;{activeGroup}&quot;
         </p>
       )}
