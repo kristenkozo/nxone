@@ -205,12 +205,12 @@ export function MarketingNav() {
               </nav>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
               <Link
                 href="/admin"
-                className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-primary lg:inline-flex"
+                className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
               >
-                Admin console
+                Admin
               </Link>
               {!loading && (
                 <>
@@ -218,7 +218,7 @@ export function MarketingNav() {
                     <button
                       type="button"
                       onClick={logout}
-                      className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-primary lg:inline-flex"
+                      className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
                     >
                       Sign out
                     </button>
@@ -226,18 +226,17 @@ export function MarketingNav() {
                     <button
                       type="button"
                       onClick={() => setLoginOpen(true)}
-                      className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-primary lg:inline-flex"
+                      className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
                     >
                       Sign in
                     </button>
                   )}
                 </>
               )}
-              <span className="mx-1 hidden h-6 w-px bg-border lg:block" />
 
               <Link
                 href="/launcher"
-                className="interactive hidden h-10 items-center justify-center rounded-xl bg-primary px-5 text-sm font-semibold tracking-[-0.005em] text-primary-foreground shadow-md hover:bg-primary-hover active:scale-[0.97] sm:inline-flex"
+                className="interactive ml-2 hidden h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-hover hover:shadow-md active:scale-[0.97] sm:inline-flex"
               >
                 Get started
               </Link>
