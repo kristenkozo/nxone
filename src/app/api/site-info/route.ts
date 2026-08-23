@@ -36,27 +36,32 @@ export async function GET(request: NextRequest) {
     if (titleMatch) title = titleMatch[1].trim();
 
     const iconPatterns = [
-      /<link[^>]*rel=["'](?:shortcut\s+)?icon["'][^>]*href=["']([^"']+)["']/i,
-      /<link[^>]*href=["']([^"']+)["'][^>]*rel=["'](?:shortcut\s+)?icon["']/i,
-      /<link[^>]*rel=["']apple-touch-icon["'][^>]*href=["']([^"']+)["']/i,
+      /<link[^>]*rel=["'](?:shortcut\s+)?icon["'][^>]*href=["']([^"']+)["']/gi,
+      /<link[^>]*href=["']([^"']+)["'][^>]*rel=["'](?:shortcut\s+)?icon["']/gi,
+      /<link[^>]*rel=["']apple-touch-icon["'][^>]*href=["']([^"']+)["']/gi,
     ];
 
-    let faviconUrl: string | null = null;
+    const candidates: string[] = [];
     for (const pattern of iconPatterns) {
-      const match = html.match(pattern);
-      if (match) {
-        faviconUrl = match[1];
+      let match;
+      while ((match = pattern.exec(html)) !== null) {
+        candidates.push(match[1]);
+      }
+    }
+    candidates.push("/favicon.ico");
+
+    for (const raw of candidates) {
+      let resolved = raw;
+      if (resolved.startsWith("//")) resolved = "https:" + resolved;
+      else if (resolved.startsWith("/")) resolved = origin + resolved;
+      else if (!resolved.startsWith("http")) resolved = origin + "/" + resolved;
+
+      const result = await fetchFaviconAsDataUri(resolved);
+      if (result) {
+        favicon = result;
         break;
       }
     }
-
-    if (!faviconUrl) faviconUrl = "/favicon.ico";
-
-    if (faviconUrl.startsWith("//")) faviconUrl = "https:" + faviconUrl;
-    else if (faviconUrl.startsWith("/")) faviconUrl = origin + faviconUrl;
-    else if (!faviconUrl.startsWith("http")) faviconUrl = origin + "/" + faviconUrl;
-
-    favicon = await fetchFaviconAsDataUri(faviconUrl);
   } catch {
     // Swallow — return whatever we have
   }
