@@ -24,3 +24,16 @@ export interface StatusResponse {
   cachedAt: string;
   cached: boolean;
 }
+
+export interface ServiceLink {
+  name: string;
+  url: string;
+  description?: string;
+  internal?: boolean;
+}
+
+export interface LinkCategory {
+  id: string;
+  label: string;
+  links: ServiceLink[];
+}

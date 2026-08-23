@@ -1,5 +1,6 @@
 import { Header } from "@/components/header";
 import { AppGrid } from "@/components/app-grid";
+import { LinkGrid } from "@/components/link-grid";
 
 export default function Home() {
   return (
@@ -7,6 +8,7 @@ export default function Home() {
       <Header />
       <main className="mt-4">
         <AppGrid />
+        <LinkGrid />
       </main>
     </div>
   );
