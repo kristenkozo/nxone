@@ -8,26 +8,52 @@ import {
 import { ConsoleMock } from "@/components/marketing/console-mock";
 import { apps, brandIconBg } from "@/lib/apps";
 import { cn } from "@/lib/utils";
-import { ArrowRight, Zap, Shield, BarChart3 } from "lucide-react";
+import {
+  ArrowRight,
+  Zap,
+  Shield,
+  BarChart3,
+  LayoutGrid,
+  Users,
+  Clock,
+} from "lucide-react";
 
 const features = [
   {
-    icon: Zap,
+    icon: LayoutGrid,
     title: "Unified Launcher",
     description:
-      "Access every Nevollo product from a single dashboard with real-time health monitoring.",
+      "One front door for every product. Launch any app, see its status, and jump straight in — no bookmarks required.",
   },
   {
     icon: Shield,
     title: "Admin Console",
     description:
-      "Manage products, services, and incidents with a purpose-built admin interface.",
+      "Manage products, services, members and incidents with a purpose-built admin interface that stays out of your way.",
   },
   {
     icon: BarChart3,
     title: "Live Health Probes",
     description:
-      "Automated health checks across all products with status history and uptime tracking.",
+      "Automated probes across every product with latency, uptime history and degraded-state detection — updated every 30 seconds.",
+  },
+  {
+    icon: Users,
+    title: "Team Access",
+    description:
+      "Role-based access with admin and member tiers. Add people in seconds, audit who has access at a glance.",
+  },
+  {
+    icon: Zap,
+    title: "Instant Deploy",
+    description:
+      "Zero-config onboarding for new products. Register a URL and health endpoint, and nxOne starts monitoring immediately.",
+  },
+  {
+    icon: Clock,
+    title: "Audit Trail",
+    description:
+      "Every sign-in, every change. A full audit log so you always know what happened and when.",
   },
 ];
 
@@ -35,104 +61,113 @@ export default function LandingPage() {
   return (
     <MarketingPage>
       <PageHero
-        title="Your entire platform, one dashboard."
-        subtitle="nxOne brings every Nevollo product together — real-time health monitoring, service management, and a unified launcher for your entire stack."
+        eyebrow="nxOne Platform"
+        title={
+          <>
+            Your entire platform,
+            <br />
+            <span className="text-primary">one dashboard.</span>
+          </>
+        }
+        body="nxOne brings every Nevollo product together — real-time health monitoring, service management, and a unified launcher for your entire stack."
+        align="center"
       >
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="/launcher"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-raised transition-colors hover:bg-primary-hover"
-          >
-            Launch Apps
-            <ArrowRight size={16} />
-          </Link>
-          <Link
-            href="/admin"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-medium transition-colors hover:bg-surface-sunken"
-          >
-            Admin Console
-          </Link>
-        </div>
+        <Link
+          href="/launcher"
+          className="interactive inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-md hover:bg-primary-hover active:scale-[0.97]"
+        >
+          Open Launcher
+          <ArrowRight className="size-4" />
+        </Link>
+        <Link
+          href="/admin"
+          className="interactive inline-flex h-12 items-center gap-2 rounded-xl border border-border bg-card px-6 text-sm font-semibold shadow-card hover:bg-secondary active:scale-[0.97]"
+        >
+          Admin Console
+        </Link>
       </PageHero>
 
       <section className="relative -mt-12 px-6 pb-24">
-        <ConsoleMock className="animate-rise [animation-delay:300ms]" />
+        <div className="mx-auto max-w-5xl">
+          <ConsoleMock className="animate-rise [animation-delay:300ms]" />
+        </div>
       </section>
 
       <section className="px-6 py-24">
-        <SectionHeading
-          label="Products"
-          title="The Nevollo ecosystem"
-          description="Seven products, one platform. Each built to be best-in-class."
-        />
-        <div className="mx-auto mt-16 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {apps.map((app, i) => {
-            const bg = brandIconBg[app.color] ?? "bg-brand-blue";
-            return (
-              <div
-                key={app.id}
-                className="animate-rise rounded-xl border border-border bg-card p-5 shadow-card transition-shadow hover:shadow-raised"
-                style={{ animationDelay: `${i * 60}ms` }}
-              >
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading
+            eyebrow="Products"
+            title="The Nevollo ecosystem"
+            body="Seven products, one platform. Each built to be best-in-class, all connected through nxOne."
+            align="center"
+          />
+          <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {apps.map((app, i) => {
+              const bg = brandIconBg[app.color] ?? "bg-brand-blue";
+              return (
                 <div
-                  className={cn(
-                    "mb-4 flex h-10 w-10 items-center justify-center rounded-lg text-xs font-bold text-white",
-                    bg,
-                  )}
+                  key={app.id}
+                  className="animate-rise rounded-xl border border-border bg-card p-5 shadow-card transition-shadow hover:shadow-raised"
+                  style={{ animationDelay: `${i * 60}ms` }}
                 >
-                  {app.initials}
+                  <div
+                    className={cn(
+                      "mb-4 flex h-10 w-10 items-center justify-center rounded-lg text-sm font-bold text-primary-foreground",
+                      bg,
+                    )}
+                  >
+                    {app.initials}
+                  </div>
+                  <h3 className="font-semibold">{app.name}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {app.description}
+                  </p>
                 </div>
-                <h3 className="font-semibold">{app.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {app.description}
-                </p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      <section className="bg-surface px-6 py-24">
-        <SectionHeading
-          label="Features"
-          title="Everything you need"
-          description="A complete operations hub for the entire Nevollo stack."
+      <section className="border-y border-border bg-surface px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading
+            eyebrow="Features"
+            title="Everything you need"
+            body="A complete operations hub for the entire Nevollo stack."
+            align="center"
+          />
+          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature, i) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={feature.title}
+                  className="animate-rise"
+                  style={{ animationDelay: `${i * 80}ms` }}
+                >
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-accent text-accent-foreground">
+                    <Icon className="size-5" />
+                  </div>
+                  <h3 className="font-semibold">{feature.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {feature.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <div className="pt-24">
+        <CTABand
+          title="Ready to get started?"
+          body="Sign in to access the full nxOne experience — launcher, admin console, and real-time service monitoring."
+          primary={{ label: "Open Launcher", href: "/launcher" }}
+          secondary={{ label: "Admin Console", href: "/admin" }}
         />
-        <div className="mx-auto mt-16 grid max-w-4xl gap-8 sm:grid-cols-3">
-          {features.map((feature, i) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={feature.title}
-                className="animate-rise text-center"
-                style={{ animationDelay: `${i * 80}ms` }}
-              >
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <Icon size={24} />
-                </div>
-                <h3 className="font-semibold">{feature.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {feature.description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <CTABand
-        title="Ready to get started?"
-        description="Sign in to access the full nxOne experience — launcher, admin console, and service management."
-        action={
-          <Link
-            href="/launcher"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium text-gray-900 shadow-raised transition-colors hover:bg-gray-100"
-          >
-            Open Launcher
-            <ArrowRight size={16} />
-          </Link>
-        }
-      />
+      </div>
     </MarketingPage>
   );
 }
