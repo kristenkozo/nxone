@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "./auth-provider";
+import { NevolloIcon } from "./nevollo-icon";
 import { Command, X } from "lucide-react";
 
 interface Props {
@@ -44,9 +45,7 @@ export function LoginDialog({ open, onClose }: Props) {
         <div className="border-b border-border px-6 py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <span className="brand-surface flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold text-primary-foreground shadow-card">
-                n
-              </span>
+              <NevolloIcon size={36} className="shadow-card" />
               <div>
                 <h2 className="text-lg font-semibold">Sign in to nxOne</h2>
                 <p className="text-xs text-muted-foreground">

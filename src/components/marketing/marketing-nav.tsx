@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth-provider";
 import { LoginDialog } from "@/components/login-dialog";
+import { NevolloIcon } from "@/components/nevollo-icon";
 import { brands, brandIconBg } from "@/lib/brands";
 import {
   Activity,
@@ -184,9 +185,7 @@ export function MarketingNav() {
           <div className="flex h-16 items-center justify-between px-6">
             <div className="flex items-center gap-10">
               <Link href="/" className="group flex items-center gap-2.5">
-                <span className="brand-surface flex h-8 w-8 items-center justify-center rounded-lg text-base font-bold text-primary-foreground shadow-card transition-transform group-hover:scale-105">
-                  n
-                </span>
+                <NevolloIcon size={32} className="shadow-card transition-transform group-hover:scale-105" />
                 <span className="font-display text-xl font-semibold tracking-tight">
                   Nevollo
                 </span>
@@ -223,13 +222,12 @@ export function MarketingNav() {
                       Sign out
                     </button>
                   ) : (
-                    <button
-                      type="button"
-                      onClick={() => setLoginOpen(true)}
+                    <Link
+                      href="/login"
                       className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
                     >
                       Sign in
-                    </button>
+                    </Link>
                   )}
                 </>
               )}

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth-provider";
 import { LoginDialog } from "@/components/login-dialog";
+import { NevolloIcon } from "@/components/nevollo-icon";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
   LayoutDashboard,
@@ -43,9 +44,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <div className="brand-surface mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl">
-            <span className="text-xl font-bold text-white">n</span>
-          </div>
+          <NevolloIcon size={48} className="mx-auto mb-6 rounded-xl" />
           <h1 className="mb-2 text-xl font-semibold">Admin Console</h1>
           <p className="mb-6 text-sm text-muted-foreground">
             Sign in to access the nxOne admin panel.
@@ -79,9 +78,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <div className="flex h-full flex-col">
           <div className="flex items-center gap-2 border-b border-border px-4 py-4">
             <Link href="/" className="flex items-center gap-2">
-              <div className="brand-surface flex h-7 w-7 items-center justify-center rounded-lg">
-                <span className="text-sm font-bold text-white">n</span>
-              </div>
+              <NevolloIcon size={28} />
               <span className="font-display text-sm font-semibold tracking-tight">
                 nxOne
               </span>

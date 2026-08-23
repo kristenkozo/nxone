@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "./auth-provider";
 import { LoginDialog } from "./login-dialog";
+import { NevolloIcon } from "./nevollo-icon";
 import { ThemeToggle } from "./theme-toggle";
 import { LogOut, User, ArrowLeft } from "lucide-react";
 
@@ -17,9 +18,7 @@ export function Header() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <div className="flex items-center gap-6">
             <Link href="/" className="group flex items-center gap-2.5">
-              <span className="brand-surface flex h-8 w-8 items-center justify-center rounded-lg text-base font-bold text-primary-foreground shadow-card transition-transform group-hover:scale-105">
-                n
-              </span>
+              <NevolloIcon size={32} className="shadow-card transition-transform group-hover:scale-105" />
               <span className="font-display text-xl font-semibold tracking-tight">
                 Nevollo
               </span>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NevolloIcon } from "@/components/nevollo-icon";
 import { brands } from "@/lib/brands";
 
 export function MarketingFooter() {
@@ -8,9 +9,7 @@ export function MarketingFooter() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="brand-surface flex h-8 w-8 items-center justify-center rounded-lg text-base font-bold text-primary-foreground">
-                n
-              </span>
+              <NevolloIcon size={32} />
               <span className="font-display text-lg font-semibold tracking-tight">
                 Nevollo
               </span>
