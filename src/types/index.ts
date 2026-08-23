@@ -25,15 +25,11 @@ export interface StatusResponse {
   cached: boolean;
 }
 
-export interface ServiceLink {
+export interface CustomService {
+  id: string;
   name: string;
   url: string;
-  description?: string;
-  internal?: boolean;
-}
-
-export interface LinkCategory {
-  id: string;
-  label: string;
-  links: ServiceLink[];
+  favicon: string | null;
+  group: string;
+  createdAt: string;
 }

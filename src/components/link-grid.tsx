@@ -1,84 +1,147 @@
 "use client";
 
-import { useState } from "react";
-import { linkCategories } from "@/lib/links";
-import type { LinkCategory, ServiceLink } from "@/types";
-import { ExternalLink, Lock, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-function LinkItem({ link }: { link: ServiceLink }) {
-  return (
-    <a
-      href={link.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex items-center gap-3 rounded-lg border border-border-subtle bg-surface-raised px-3.5 py-2.5 transition-all hover:border-border hover:shadow-sm hover:-translate-y-px"
-    >
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1.5">
-          <span className="text-sm font-medium truncate">{link.name}</span>
-          {link.internal && (
-            <Lock size={11} className="shrink-0 text-text-faint" />
-          )}
-        </div>
-        {link.description && (
-          <p className="text-xs text-text-faint truncate">{link.description}</p>
-        )}
-      </div>
-      <ExternalLink
-        size={13}
-        className="shrink-0 text-text-faint opacity-0 transition-opacity group-hover:opacity-100"
-      />
-    </a>
-  );
-}
-
-function CategorySection({ category }: { category: LinkCategory }) {
-  const [open, setOpen] = useState(true);
-
-  return (
-    <div>
-      <button
-        onClick={() => setOpen(!open)}
-        className="mb-3 flex w-full items-center gap-2 text-left"
-      >
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-text-faint">
-          {category.label}
-        </h3>
-        <div className="h-px flex-1 bg-border-subtle" />
-        <ChevronDown
-          size={14}
-          className={cn(
-            "text-text-faint transition-transform",
-            !open && "-rotate-90",
-          )}
-        />
-      </button>
-      {open && (
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {category.links.map((link) => (
-            <LinkItem key={link.url} link={link} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { CustomService } from "@/types";
+import { getServices, addService, updateService, deleteService, getGroups } from "@/lib/service-store";
+import { ServiceCard } from "./service-card";
+import { ServiceDialog } from "./service-dialog";
+import { GroupFilter } from "./group-filter";
+import { Plus, LayoutGrid } from "lucide-react";
 
 export function LinkGrid() {
+  const [services, setServices] = useState<CustomService[]>([]);
+  const [activeGroup, setActiveGroup] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editing, setEditing] = useState<CustomService | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setServices(getServices());
+    setMounted(true);
+  }, []);
+
+  const groups = useMemo(() => getGroups(services), [services]);
+  const countByGroup = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const s of services) counts[s.group] = (counts[s.group] || 0) + 1;
+    return counts;
+  }, [services]);
+
+  const filtered = useMemo(
+    () => (activeGroup ? services.filter((s) => s.group === activeGroup) : services),
+    [services, activeGroup],
+  );
+
+  const refresh = useCallback(() => setServices(getServices()), []);
+
+  const handleSave = useCallback(
+    (data: { name: string; url: string; favicon: string | null; group: string }) => {
+      if (editing) {
+        updateService(editing.id, data);
+      } else {
+        addService(data);
+      }
+      refresh();
+      setDialogOpen(false);
+      setEditing(null);
+    },
+    [editing, refresh],
+  );
+
+  const handleEdit = useCallback((service: CustomService) => {
+    setEditing(service);
+    setDialogOpen(true);
+  }, []);
+
+  const handleDelete = useCallback(
+    (id: string) => {
+      if (!confirm("Remove this service?")) return;
+      deleteService(id);
+      refresh();
+    },
+    [refresh],
+  );
+
+  const handleAdd = useCallback(() => {
+    setEditing(null);
+    setDialogOpen(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="px-6 pb-12 md:px-8">
-      <div className="mb-6 flex items-center gap-3">
-        <h2 className="text-base font-semibold">All Services</h2>
-        <span className="rounded-full bg-surface-sunken px-2 py-0.5 text-xs text-text-faint">
-          {linkCategories.reduce((n, c) => n + c.links.length, 0)}
-        </span>
+      <div className="mb-5 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <LayoutGrid size={16} className="text-text-faint" />
+          <h2 className="text-base font-semibold">My Services</h2>
+          {services.length > 0 && (
+            <span className="rounded-full bg-surface-sunken px-2 py-0.5 text-xs text-text-faint">
+              {services.length}
+            </span>
+          )}
+        </div>
+        <button
+          onClick={handleAdd}
+          className="flex items-center gap-1.5 rounded-lg bg-accent-violet px-3 py-1.5 text-xs font-medium text-white transition-colors hover:opacity-90"
+        >
+          <Plus size={14} />
+          Add Service
+        </button>
       </div>
-      <div className="flex flex-col gap-6">
-        {linkCategories.map((category) => (
-          <CategorySection key={category.id} category={category} />
-        ))}
-      </div>
+
+      {services.length > 0 && (
+        <div className="mb-4">
+          <GroupFilter
+            groups={groups}
+            activeGroup={activeGroup}
+            onSelect={setActiveGroup}
+            totalCount={services.length}
+            countByGroup={countByGroup}
+          />
+        </div>
+      )}
+
+      {filtered.length > 0 ? (
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((service, i) => (
+            <div key={service.id} style={{ animationDelay: `${i * 40}ms` }}>
+              <ServiceCard
+                service={service}
+                onEdit={() => handleEdit(service)}
+                onDelete={() => handleDelete(service.id)}
+              />
+            </div>
+          ))}
+        </div>
+      ) : services.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border-subtle py-16">
+          <LayoutGrid size={32} className="mb-3 text-text-faint" />
+          <p className="mb-1 text-sm font-medium text-text-muted">No services yet</p>
+          <p className="mb-5 text-xs text-text-faint">
+            Add links to your frequently used services and tools.
+          </p>
+          <button
+            onClick={handleAdd}
+            className="flex items-center gap-1.5 rounded-lg bg-accent-violet px-4 py-2 text-sm font-medium text-white transition-colors hover:opacity-90"
+          >
+            <Plus size={16} />
+            Add Service
+          </button>
+        </div>
+      ) : (
+        <p className="py-8 text-center text-sm text-text-faint">
+          No services in &quot;{activeGroup}&quot;
+        </p>
+      )}
+
+      <ServiceDialog
+        open={dialogOpen}
+        onClose={() => { setDialogOpen(false); setEditing(null); }}
+        onSave={handleSave}
+        service={editing}
+        existingGroups={groups}
+      />
     </div>
   );
 }
