@@ -184,11 +184,8 @@ export function MarketingNav() {
         <div className="relative mx-auto max-w-7xl rounded-2xl border border-border/60 bg-background/80 shadow-card backdrop-blur-xl">
           <div className="flex h-16 items-center justify-between px-6">
             <div className="flex items-center gap-10">
-              <Link href="/" className="group flex items-center gap-2.5">
-                <NevolloIcon size={32} className="shadow-card transition-transform group-hover:scale-105" />
-                <span className="font-display text-xl font-semibold tracking-tight">
-                  Nevollo
-                </span>
+              <Link href="/" className="group flex items-center">
+                <NevolloIcon size={36} className="transition-transform group-hover:scale-105" />
               </Link>
 
               <nav className="hidden items-center gap-1 md:flex">

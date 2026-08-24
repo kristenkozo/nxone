@@ -13,7 +13,7 @@ export function NevolloIcon({
       alt="Nevollo"
       width={size}
       height={size}
-      className={cn("rounded-lg", className)}
+      className={cn("object-contain", className)}
     />
   );
 }

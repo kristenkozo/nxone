@@ -57,11 +57,8 @@ export default function LoginPage() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-teal/8 via-transparent to-brand-violet/8" />
 
       <header className="relative z-10 px-6 py-5">
-        <Link href="/" className="inline-flex items-center gap-2.5">
-          <NevolloIcon size={32} />
-          <span className="font-display text-lg font-semibold tracking-tight">
-            Nevollo
-          </span>
+        <Link href="/" className="inline-flex items-center">
+          <NevolloIcon size={36} />
         </Link>
       </header>
 

@@ -8,12 +8,7 @@ export function MarketingFooter() {
       <div className="mx-auto max-w-6xl px-6 py-16">
         <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <NevolloIcon size={32} />
-              <span className="font-display text-lg font-semibold tracking-tight">
-                Nevollo
-              </span>
-            </div>
+            <NevolloIcon size={36} />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
               A family of products for data, revenue, infrastructure and applied
               research — built on one shared platform.
