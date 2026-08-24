@@ -110,7 +110,7 @@ export function CTABand({
   secondary?: { label: string; href: string };
 }) {
   return (
-    <section className="mx-auto max-w-6xl px-6 pb-24">
+    <section className="mx-auto max-w-6xl px-6 pb-16">
       <div className="brand-surface rounded-3xl px-8 py-16 text-center shadow-overlay md:px-16">
         <h2 className="text-3xl font-bold text-primary-foreground md:text-4xl">
           {title}

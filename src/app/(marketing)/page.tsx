@@ -117,7 +117,7 @@ export default function LandingPage() {
       {/* ── Hero ─────────────────────────────────────────── */}
       <section className="hero-surface relative -mt-20 overflow-hidden border-b border-border">
         <div className="grid-lines pointer-events-none absolute inset-0 opacity-40" />
-        <div className="relative mx-auto grid max-w-6xl gap-12 px-6 pb-20 pt-[10rem] md:pb-28 md:pt-[12rem] lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-16">
+        <div className="relative mx-auto grid max-w-6xl gap-12 px-6 pb-16 pt-[10rem] md:pb-20 md:pt-[12rem] lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-16">
           <div>
             <h1 className="animate-rise text-4xl font-bold leading-[1.08] md:text-[3.5rem]">
               Seven products.
@@ -205,7 +205,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Products that go deep ───────────────────────── */}
-      <section id="brands" className="px-6 py-24">
+      <section id="brands" className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="flex items-end justify-between">
             <div className="max-w-2xl">
@@ -295,7 +295,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Meet nxOne ──────────────────────────────────── */}
-      <section className="border-y border-border bg-surface px-6 py-24">
+      <section className="border-y border-border bg-surface px-6 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -345,7 +345,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── How it works ────────────────────────────────── */}
-      <section className="px-6 py-24">
+      <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
             How it works
@@ -375,7 +375,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── The Platform ────────────────────────────────── */}
-      <section className="border-y border-border bg-surface px-6 py-24">
+      <section className="border-y border-border bg-surface px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -425,7 +425,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Testimonial + Case study ────────────────────── */}
-      <section className="px-6 py-24">
+      <section className="px-6 py-16">
         <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
           <div className="flex flex-col rounded-2xl border border-border bg-card p-8 shadow-card">
             <Quote className="size-8 text-primary" />
