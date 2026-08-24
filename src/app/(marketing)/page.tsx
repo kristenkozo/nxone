@@ -122,7 +122,7 @@ export default function LandingPage() {
             <h1 className="animate-rise text-4xl font-bold leading-[1.08] md:text-[3.5rem]">
               Seven products.
               <br />
-              <span className="text-brand-emerald">
+              <span className="text-brand-blue">
                 One platform
                 <br />
                 behind them.
@@ -184,22 +184,21 @@ export default function LandingPage() {
 
       {/* ── Brand ticker ────────────────────────────────── */}
       <section className="overflow-hidden border-b border-border bg-surface py-4">
-        <div className="flex animate-[scroll_30s_linear_infinite] items-center gap-10 whitespace-nowrap">
+        <div className="flex animate-[scroll_30s_linear_infinite] items-center gap-8 whitespace-nowrap">
           {[...brands, ...brands].map((b, i) => (
             <span
               key={`${b.slug}-${i}`}
-              className="flex shrink-0 items-center gap-2 text-sm font-medium text-muted-foreground"
+              className="flex shrink-0 items-center gap-2.5 text-sm font-medium text-muted-foreground"
             >
               <span
                 className={cn(
-                  "h-2 w-2 rounded-full",
-                  brandDotColor[b.color] ?? "bg-brand-blue",
+                  "flex h-7 w-7 items-center justify-center rounded-md text-[10px] font-bold text-white",
+                  brandIconBg[b.color] ?? "bg-brand-blue",
                 )}
-              />
-              {b.name}
-              <span className="text-xs text-subtle-foreground">
-                {b.tagline.toLowerCase()}
+              >
+                {b.initials}
               </span>
+              {b.name}
             </span>
           ))}
         </div>
