@@ -189,15 +189,15 @@ export function MarketingNav() {
               </Link>
 
               <nav className="hidden items-center gap-1 md:flex">
-                {trigger("brands", "Brands")}
                 {trigger("nxone", "nxOne")}
+                {trigger("brands", "Brands")}
+                {trigger("company", "Company")}
                 <Link
                   href="/launcher"
                   className="rounded-lg px-3 py-2 text-[15px] font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
                 >
                   Launcher
                 </Link>
-                {trigger("company", "Company")}
               </nav>
             </div>
 
