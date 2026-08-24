@@ -115,7 +115,7 @@ export default function LandingPage() {
   return (
     <MarketingPage>
       {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="hero-surface relative -mt-20 overflow-hidden border-b border-border">
+      <section className="hero-surface relative -mt-20 overflow-hidden">
         <div className="grid-lines pointer-events-none absolute inset-0 opacity-40" />
         <div className="relative mx-auto grid max-w-6xl gap-12 px-6 pb-16 pt-[10rem] md:pb-20 md:pt-[12rem] lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-16">
           <div>
@@ -183,7 +183,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Brand ticker ────────────────────────────────── */}
-      <section className="overflow-hidden border-b border-border bg-surface py-4">
+      <section className="overflow-hidden py-4">
         <div className="flex animate-[scroll_30s_linear_infinite] items-center gap-8 whitespace-nowrap">
           {[...brands, ...brands].map((b, i) => (
             <span
@@ -295,7 +295,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Meet nxOne ──────────────────────────────────── */}
-      <section className="border-y border-border bg-surface px-6 py-16">
+      <section className="px-6 py-16">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
@@ -375,7 +375,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── The Platform ────────────────────────────────── */}
-      <section className="border-y border-border bg-surface px-6 py-16">
+      <section className="px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
