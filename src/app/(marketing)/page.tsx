@@ -180,32 +180,32 @@ export default function LandingPage() {
             <ConsoleMock />
           </div>
         </div>
-      </section>
 
-      {/* ── Brand ticker ────────────────────────────────── */}
-      <section className="overflow-hidden py-4">
-        <div className="flex animate-[scroll_30s_linear_infinite] items-center gap-8 whitespace-nowrap">
-          {[...brands, ...brands].map((b, i) => (
-            <span
-              key={`${b.slug}-${i}`}
-              className="flex shrink-0 items-center gap-2.5 text-sm font-medium text-muted-foreground"
-            >
+        {/* Brand ticker — inside hero for seamless flow */}
+        <div className="relative overflow-hidden border-t border-border/40 py-4">
+          <div className="flex animate-[scroll_30s_linear_infinite] items-center gap-8 whitespace-nowrap">
+            {[...brands, ...brands].map((b, i) => (
               <span
-                className={cn(
-                  "flex h-7 w-7 items-center justify-center rounded-md text-[10px] font-bold text-white",
-                  brandIconBg[b.color] ?? "bg-brand-blue",
-                )}
+                key={`${b.slug}-${i}`}
+                className="flex shrink-0 items-center gap-2.5 text-sm font-medium text-muted-foreground"
               >
-                {b.initials}
+                <span
+                  className={cn(
+                    "flex h-7 w-7 items-center justify-center rounded-md text-[10px] font-bold text-white",
+                    brandIconBg[b.color] ?? "bg-brand-blue",
+                  )}
+                >
+                  {b.initials}
+                </span>
+                {b.name}
               </span>
-              {b.name}
-            </span>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ── Products that go deep ───────────────────────── */}
-      <section id="brands" className="px-6 py-16">
+      <section id="brands" className="px-6 pt-10 pb-16">
         <div className="mx-auto max-w-6xl">
           <div className="flex items-end justify-between">
             <div className="max-w-2xl">
