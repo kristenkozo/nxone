@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "nxOne",
+  title: "Nevollo One",
   description: "Nevollo application launcher",
   metadataBase: new URL("https://one.nevollo.com"),
   icons: { icon: "/favicon.svg" },
