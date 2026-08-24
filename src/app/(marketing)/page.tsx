@@ -2,7 +2,6 @@ import Link from "next/link";
 import { MarketingPage, CTABand } from "@/components/marketing/section";
 import { ConsoleMock } from "@/components/marketing/console-mock";
 import { apps, brandIconBg } from "@/lib/apps";
-import { brands } from "@/lib/brands";
 import { cn } from "@/lib/utils";
 import {
   ArrowRight,
@@ -20,16 +19,6 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
-
-const brandDotColor: Record<string, string> = {
-  blue: "bg-brand-blue",
-  indigo: "bg-brand-indigo",
-  violet: "bg-brand-violet",
-  emerald: "bg-brand-emerald",
-  amber: "bg-brand-amber",
-  teal: "bg-brand-teal",
-  rose: "bg-brand-rose",
-};
 
 const categoryLabel: Record<string, string> = {
   dxdata: "Data platform",
@@ -181,27 +170,7 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Brand ticker — inside hero for seamless flow */}
-        <div className="relative overflow-hidden border-t border-border/40 py-4">
-          <div className="flex animate-[scroll_30s_linear_infinite] items-center gap-8 whitespace-nowrap">
-            {[...brands, ...brands].map((b, i) => (
-              <span
-                key={`${b.slug}-${i}`}
-                className="flex shrink-0 items-center gap-2.5 text-sm font-medium text-muted-foreground"
-              >
-                <span
-                  className={cn(
-                    "flex h-7 w-7 items-center justify-center rounded-md text-[10px] font-bold text-white",
-                    brandIconBg[b.color] ?? "bg-brand-blue",
-                  )}
-                >
-                  {b.initials}
-                </span>
-                {b.name}
-              </span>
-            ))}
-          </div>
-        </div>
+
       </section>
 
       {/* ── Products that go deep ───────────────────────── */}
