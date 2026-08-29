@@ -32,14 +32,17 @@ export default function LauncherPage() {
       <Header />
       <main className="mx-auto max-w-6xl px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold">App Launcher</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight">App Launcher</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
             Access every Nevollo product and monitor real-time health status.
           </p>
         </div>
         <AppGrid />
-        <div className="mt-12">
-          <LinkGrid />
+        <div className="mt-14">
+          <div className="mx-auto h-px w-2/3 bg-gradient-to-r from-transparent via-border to-transparent" />
+          <div className="pt-10">
+            <LinkGrid />
+          </div>
         </div>
       </main>
     </div>

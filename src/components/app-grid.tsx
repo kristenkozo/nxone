@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { AppStatus, StatusResponse, StoredProduct } from "@/types";
 import { gridCols } from "@/lib/utils";
 import { AppCard } from "./app-card";
+import { Activity, Box } from "lucide-react";
 
 const POLL_INTERVAL_MS = 30_000;
 
@@ -88,8 +89,30 @@ export function AppGrid() {
     );
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-16">
+        <Box size={32} className="mb-3 text-muted-foreground" />
+        <p className="text-sm font-medium text-muted-foreground">
+          No products configured
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Products will appear here once added.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div>
+      <div className="mb-5 flex items-center gap-2.5">
+        <Activity size={16} className="text-muted-foreground" />
+        <h2 className="text-lg font-semibold">Products</h2>
+        <span className="rounded-full bg-surface-sunken px-2 py-0.5 text-xs text-muted-foreground">
+          {products.length}
+        </span>
+      </div>
+
       <div className={`grid gap-4 ${gridCols(products.length)}`}>
         {products.map((app, i) => (
           <AppCard
@@ -102,12 +125,15 @@ export function AppGrid() {
       </div>
 
       {lastUpdated && (
-        <p className="mt-6 text-center text-xs text-muted-foreground">
-          Status checked{" "}
-          <time dateTime={lastUpdated}>
-            {new Date(lastUpdated).toLocaleTimeString()}
-          </time>
-        </p>
+        <div className="mt-6 flex items-center justify-center">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-sunken px-3 py-1 text-xs text-muted-foreground">
+            <span className="h-1 w-1 rounded-full bg-status-up animate-status-pulse" />
+            Status checked{" "}
+            <time dateTime={lastUpdated}>
+              {new Date(lastUpdated).toLocaleTimeString()}
+            </time>
+          </span>
+        </div>
       )}
     </div>
   );

@@ -68,12 +68,12 @@ export default function ProductsPage() {
             return (
               <div
                 key={app.id}
-                className="rounded-xl border border-border bg-card p-5 shadow-card"
+                className="rounded-2xl border border-border bg-card p-6 shadow-card"
               >
                 <div className="mb-4 flex items-center justify-between">
                   <div
                     className={cn(
-                      "flex h-10 w-10 items-center justify-center rounded-lg text-xs font-bold text-white",
+                      "flex h-10 w-10 items-center justify-center rounded-xl text-xs font-bold text-white",
                       bg,
                     )}
                   >
@@ -111,7 +111,7 @@ export default function ProductsPage() {
                   {app.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md bg-surface-sunken px-2 py-0.5 text-xs text-subtle-foreground"
+                      className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-accent-foreground"
                     >
                       {tag}
                     </span>

@@ -18,10 +18,10 @@ export function GroupFilter({ groups, activeGroup, onSelect, totalCount, countBy
       <button
         onClick={() => onSelect(null)}
         className={cn(
-          "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+          "rounded-full px-3 py-1 text-xs font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           activeGroup === null
-            ? "bg-accent-violet text-white"
-            : "bg-surface-sunken text-text-muted hover:text-text",
+            ? "bg-primary text-primary-foreground shadow-sm active:scale-[0.97]"
+            : "bg-surface-sunken text-muted-foreground hover:text-foreground hover:bg-surface-sunken/80 active:scale-[0.97]",
         )}
       >
         All ({totalCount})
@@ -31,10 +31,10 @@ export function GroupFilter({ groups, activeGroup, onSelect, totalCount, countBy
           key={group}
           onClick={() => onSelect(activeGroup === group ? null : group)}
           className={cn(
-            "rounded-full px-3 py-1 text-xs font-medium transition-colors",
+            "rounded-full px-3 py-1 text-xs font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             activeGroup === group
-              ? "bg-accent-violet text-white"
-              : "bg-surface-sunken text-text-muted hover:text-text",
+              ? "bg-primary text-primary-foreground shadow-sm active:scale-[0.97]"
+              : "bg-surface-sunken text-muted-foreground hover:text-foreground hover:bg-surface-sunken/80 active:scale-[0.97]",
           )}
         >
           {group} ({countByGroup[group] || 0})

@@ -79,14 +79,40 @@ export function LinkGrid() {
     setDialogOpen(true);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return (
+      <div>
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="h-4 w-4 rounded bg-surface-sunken" />
+            <div className="h-5 w-28 rounded bg-surface-sunken" />
+          </div>
+          <div className="h-9 w-28 rounded-xl bg-surface-sunken" />
+        </div>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex animate-pulse items-center gap-3 rounded-xl border border-border bg-card px-4 py-3"
+            >
+              <div className="h-9 w-9 rounded-lg bg-surface-sunken" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 w-24 rounded bg-surface-sunken" />
+                <div className="h-3 w-32 rounded bg-surface-sunken" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
       <div className="mb-5 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <LayoutGrid size={16} className="text-muted-foreground" />
-          <h2 className="text-base font-semibold">My Services</h2>
+          <h2 className="text-lg font-semibold">My Services</h2>
           {services.length > 0 && (
             <span className="rounded-full bg-surface-sunken px-2 py-0.5 text-xs text-muted-foreground">
               {services.length}

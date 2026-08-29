@@ -5,13 +5,13 @@ import { ExternalLink, Pencil, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ACCENT_COLORS = [
-  "bg-accent-blue",
-  "bg-accent-indigo",
-  "bg-accent-violet",
-  "bg-accent-emerald",
-  "bg-accent-amber",
-  "bg-accent-teal",
-  "bg-accent-rose",
+  "bg-brand-blue",
+  "bg-brand-indigo",
+  "bg-brand-violet",
+  "bg-brand-emerald",
+  "bg-brand-amber",
+  "bg-brand-teal",
+  "bg-brand-rose",
 ];
 
 function initialsColor(name: string) {
@@ -42,7 +42,7 @@ export function ServiceCard({ service, onEdit, onDelete }: Props) {
       href={service.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex items-center gap-3 rounded-xl border border-border-subtle bg-surface-raised px-4 py-3 transition-all hover:border-border hover:shadow-sm hover:-translate-y-px"
+      className="group relative flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-all hover:border-border-strong hover:shadow-sm hover:-translate-y-px"
       style={{ animation: "grid-fade 0.3s ease-out backwards" }}
     >
       <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg">
@@ -60,10 +60,10 @@ export function ServiceCard({ service, onEdit, onDelete }: Props) {
           <span className="truncate text-sm font-medium">{service.name}</span>
           <ExternalLink
             size={12}
-            className="shrink-0 text-text-faint opacity-0 transition-opacity group-hover:opacity-100"
+            className="shrink-0 text-subtle-foreground opacity-0 transition-opacity group-hover:opacity-100"
           />
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-text-faint">
+        <div className="flex items-center gap-1.5 text-xs text-subtle-foreground">
           <span className="truncate">{getDomain(service.url)}</span>
           {service.group && service.group !== "Uncategorized" && (
             <>
@@ -77,17 +77,17 @@ export function ServiceCard({ service, onEdit, onDelete }: Props) {
       <div className="flex shrink-0 gap-1 opacity-0 transition-opacity group-hover:opacity-100">
         <button
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); onEdit(); }}
-          className="rounded-md p-1.5 text-text-faint transition-colors hover:bg-surface-sunken hover:text-text"
+          className="rounded-md p-2 -m-0.5 text-subtle-foreground transition-colors hover:bg-surface-sunken hover:text-foreground"
           title="Edit"
         >
-          <Pencil size={13} />
+          <Pencil size={14} />
         </button>
         <button
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }}
-          className="rounded-md p-1.5 text-text-faint transition-colors hover:bg-surface-sunken hover:text-status-down"
+          className="rounded-md p-2 -m-0.5 text-subtle-foreground transition-colors hover:bg-surface-sunken hover:text-status-down"
           title="Delete"
         >
-          <Trash2 size={13} />
+          <Trash2 size={14} />
         </button>
       </div>
     </a>

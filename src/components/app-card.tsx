@@ -2,6 +2,7 @@
 
 import { ArrowUpRight, Lock } from "lucide-react";
 import type { AppDefinition, AppStatus } from "@/types";
+import { StatusPill } from "./status-pill";
 import { cn } from "@/lib/utils";
 
 const iconBg: Record<string, string> = {
@@ -12,20 +13,6 @@ const iconBg: Record<string, string> = {
   amber: "bg-brand-amber",
   teal: "bg-brand-teal",
   rose: "bg-brand-rose",
-};
-
-const statusLabel: Record<AppStatus, string> = {
-  up: "Operational",
-  degraded: "Degraded",
-  down: "Unreachable",
-  unknown: "Internal",
-};
-
-const statusColor: Record<AppStatus, string> = {
-  up: "bg-status-up",
-  degraded: "bg-status-degraded",
-  down: "bg-status-down",
-  unknown: "bg-status-unknown",
 };
 
 export function AppCard({
@@ -48,7 +35,8 @@ export function AppCard({
       className={cn(
         "animate-rise group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-card transition-all duration-200",
         clickable &&
-          "hover:-translate-y-1 hover:border-border-strong hover:shadow-raised",
+          "hover:-translate-y-1 hover:border-border-strong hover:shadow-card-hover",
+        !clickable && "cursor-default opacity-75",
       )}
       style={{ animationDelay: `${index * 50}ms` }}
     >
@@ -61,12 +49,7 @@ export function AppCard({
         >
           {app.initials}
         </span>
-        <span className="flex items-center gap-2 rounded-full bg-surface-sunken px-2.5 py-1 text-xs font-medium text-muted-foreground">
-          <span
-            className={cn("h-1.5 w-1.5 rounded-full", statusColor[status])}
-          />
-          {statusLabel[status]}
-        </span>
+        <StatusPill status={status} />
       </div>
 
       <h3 className="mt-5 flex items-center gap-1.5 text-xl font-semibold">
@@ -81,18 +64,22 @@ export function AppCard({
         {app.description}
       </p>
 
-      <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-border pt-4">
-        <span className="font-mono text-xs text-subtle-foreground">
+      <div className="mt-6 space-y-2.5 border-t border-border pt-4">
+        <span className="block font-mono text-xs text-subtle-foreground">
           {app.domain}
         </span>
-        {app.tags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-accent-foreground"
-          >
-            {tag}
-          </span>
-        ))}
+        {app.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {app.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full bg-accent px-2 py-0.5 text-[11px] font-medium text-accent-foreground"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </Tag>
   );

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth-provider";
 import { LoginDialog } from "@/components/login-dialog";
 import { NevolloIcon } from "@/components/nevollo-icon";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { UserMenu } from "@/components/user-menu";
 import {
   LayoutDashboard,
   Box,
@@ -17,11 +17,11 @@ import {
   ScrollText,
   Settings,
   Wrench,
-  LogOut,
-  User,
   Menu,
   X,
 } from "lucide-react";
+
+export { StatusPill } from "@/components/status-pill";
 
 const navItems = [
   { key: "overview", label: "Overview", icon: LayoutDashboard, href: "/admin" },
@@ -35,7 +35,7 @@ const navItems = [
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout, updateProfile } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
   const [loginOpen, setLoginOpen] = useState(false);
@@ -91,31 +91,20 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               </Link>
               <Link
                 href="/admin"
-                className="rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-foreground"
+                className="rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-foreground transition-colors"
               >
                 Admin
               </Link>
             </nav>
           </div>
 
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
+          <div className="flex items-center gap-2">
             {user && (
-              <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1.5 rounded-full bg-surface-sunken px-3 py-1.5 text-xs font-medium text-muted-foreground">
-                  <User className="size-3.5" />
-                  {user.firstName && user.lastName
-                    ? `${user.firstName} ${user.lastName}`
-                    : user.username}
-                </span>
-                <button
-                  onClick={logout}
-                  className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-                  title="Sign out"
-                >
-                  <LogOut className="size-4" />
-                </button>
-              </div>
+              <UserMenu
+                user={user}
+                logout={logout}
+                updateProfile={updateProfile}
+              />
             )}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -129,7 +118,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Tab strip */}
-      <div className="border-b border-border bg-background">
+      <div className="border-b border-border/50 bg-background">
         <div className="mx-auto max-w-6xl px-6">
           <nav className="-mb-px hidden items-center gap-1 sm:flex" role="tablist">
             {navItems.map((item) => {
@@ -142,17 +131,20 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   role="tab"
                   aria-selected={active}
                   className={cn(
-                    "relative flex items-center gap-2 whitespace-nowrap px-3 py-3 text-sm font-medium transition-colors",
+                    "relative flex items-center gap-2 whitespace-nowrap rounded-t-md px-3 py-3 text-sm font-medium transition-colors",
                     active
                       ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
+                      : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground",
                   )}
                 >
                   <Icon size={15} />
                   {item.label}
-                  {active && (
-                    <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
-                  )}
+                  <span
+                    className={cn(
+                      "absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary transition-opacity duration-150",
+                      active ? "opacity-100" : "opacity-0",
+                    )}
+                  />
                 </Link>
               );
             })}
@@ -212,9 +204,9 @@ export function PageHeader({
   return (
     <div className="mb-8 flex items-start justify-between">
       <div>
-        <h1 className="text-2xl font-bold">{title}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
         {description && (
-          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+          <p className="mt-2 text-sm text-muted-foreground">{description}</p>
         )}
       </div>
       {actions && <div className="flex items-center gap-2">{actions}</div>}
@@ -245,32 +237,5 @@ export function Panel({
       )}
       <div className="p-5">{children}</div>
     </div>
-  );
-}
-
-export function StatusPill({
-  status,
-}: {
-  status: "up" | "degraded" | "down" | "unknown";
-}) {
-  const config = {
-    up: { label: "Operational", dot: "bg-status-up", bg: "bg-status-up/10", text: "text-status-up" },
-    degraded: { label: "Degraded", dot: "bg-status-degraded", bg: "bg-status-degraded/10", text: "text-status-degraded" },
-    down: { label: "Unreachable", dot: "bg-status-down", bg: "bg-status-down/10", text: "text-status-down" },
-    unknown: { label: "Unknown", dot: "bg-status-unknown", bg: "bg-status-unknown/10", text: "text-status-unknown" },
-  };
-  const c = config[status];
-
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium",
-        c.bg,
-        c.text,
-      )}
-    >
-      <span className={cn("h-1.5 w-1.5 rounded-full", c.dot)} />
-      {c.label}
-    </span>
   );
 }
