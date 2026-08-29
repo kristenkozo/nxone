@@ -75,80 +75,79 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="group flex items-center">
-              <NevolloIcon size={36} className="transition-transform group-hover:scale-105" />
-            </Link>
-            <span className="hidden h-6 w-px bg-border sm:block" />
-            <nav className="hidden items-center gap-1 sm:flex">
-              <Link
-                href="/launcher"
-                className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                Launcher
+      {/* Unified header block */}
+      <div className="border-b border-border bg-background/80 backdrop-blur-xl">
+        <div className="mx-auto max-w-6xl px-6">
+          {/* Top bar */}
+          <div className="flex h-14 items-center justify-between">
+            <div className="flex items-center gap-5">
+              <Link href="/" className="group flex items-center">
+                <NevolloIcon size={32} className="transition-transform group-hover:scale-105" />
               </Link>
-              <Link
-                href="/admin"
-                className="rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-foreground transition-colors"
+              <span className="hidden h-5 w-px bg-border sm:block" />
+              <nav className="hidden items-center sm:flex">
+                <Link
+                  href="/launcher"
+                  className="rounded-md px-2.5 py-1 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  Launcher
+                </Link>
+                <Link
+                  href="/admin"
+                  className="rounded-md px-2.5 py-1 text-[13px] font-semibold text-foreground"
+                >
+                  Admin
+                </Link>
+              </nav>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {user && (
+                <UserMenu
+                  user={user}
+                  logout={logout}
+                  updateProfile={updateProfile}
+                />
+              )}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary sm:hidden"
+                aria-label="Toggle menu"
               >
-                Admin
-              </Link>
+                {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Tab strip — recessed pill nav */}
+          <div className="hidden pb-2 sm:block">
+            <nav
+              className="inline-flex items-center gap-0.5 rounded-lg bg-surface-sunken p-1"
+              role="tablist"
+            >
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const active = item.key === activeKey;
+                return (
+                  <Link
+                    key={item.key}
+                    href={item.href}
+                    role="tab"
+                    aria-selected={active}
+                    className={cn(
+                      "flex items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-all duration-150",
+                      active
+                        ? "bg-card text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    <Icon size={14} className={active ? "text-primary" : ""} />
+                    {item.label}
+                  </Link>
+                );
+              })}
             </nav>
           </div>
-
-          <div className="flex items-center gap-2">
-            {user && (
-              <UserMenu
-                user={user}
-                logout={logout}
-                updateProfile={updateProfile}
-              />
-            )}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary sm:hidden"
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Tab strip */}
-      <div className="border-b border-border/50 bg-background">
-        <div className="mx-auto max-w-6xl px-6">
-          <nav className="-mb-px hidden items-center gap-1 sm:flex" role="tablist">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const active = item.key === activeKey;
-              return (
-                <Link
-                  key={item.key}
-                  href={item.href}
-                  role="tab"
-                  aria-selected={active}
-                  className={cn(
-                    "relative flex items-center gap-2 whitespace-nowrap rounded-t-md px-3 py-3 text-sm font-medium transition-colors",
-                    active
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground",
-                  )}
-                >
-                  <Icon size={15} />
-                  {item.label}
-                  <span
-                    className={cn(
-                      "absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary transition-opacity duration-150",
-                      active ? "opacity-100" : "opacity-0",
-                    )}
-                  />
-                </Link>
-              );
-            })}
-          </nav>
         </div>
       </div>
 
