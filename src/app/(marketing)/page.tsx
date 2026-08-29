@@ -3,7 +3,7 @@ import { MarketingPage, CTABand } from "@/components/marketing/section";
 import { ConsoleMock } from "@/components/marketing/console-mock";
 import { brandIconBg } from "@/lib/apps";
 import { getVisibleProducts } from "@/lib/product-store";
-import { cn } from "@/lib/utils";
+import { cn, gridCols } from "@/lib/utils";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -191,7 +191,7 @@ export default async function LandingPage() {
             </Link>
           </div>
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className={`mt-12 grid gap-4 ${gridCols(products.length)}`}>
             {products.map((product, i) => {
               const bg = brandIconBg[product.color] ?? "bg-brand-blue";
               const clickable = product.url !== null;

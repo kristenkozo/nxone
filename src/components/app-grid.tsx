@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { AppStatus, StatusResponse, StoredProduct } from "@/types";
+import { gridCols } from "@/lib/utils";
 import { AppCard } from "./app-card";
 
 const POLL_INTERVAL_MS = 30_000;
@@ -89,7 +90,7 @@ export function AppGrid() {
 
   return (
     <div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className={`grid gap-4 ${gridCols(products.length)}`}>
         {products.map((app, i) => (
           <AppCard
             key={app.id}

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { brandIconBg } from "@/lib/apps";
-import { cn } from "@/lib/utils";
+import { cn, gridCols } from "@/lib/utils";
 import type { AppStatus, StatusResponse, StoredProduct } from "@/types";
 import { PageHeader, StatusPill } from "@/components/admin/admin-shell";
 import { ArrowUpRight, Lock, Loader2 } from "lucide-react";
@@ -60,7 +60,7 @@ export default function ProductsPage() {
           <span className="ml-2 text-sm">Loading products...</span>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={`grid gap-4 ${gridCols(products.length)}`}>
           {products.map((app) => {
             const bg = brandIconBg[app.color] ?? "bg-brand-blue";
             const status = statuses[app.id] ?? "unknown";
