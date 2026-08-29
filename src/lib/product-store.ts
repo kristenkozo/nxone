@@ -107,9 +107,9 @@ function ensureSeeded(): StoredProduct[] {
       description:
         "Codebase knowledge graph — code search, graph traversal, and context packs",
       tagline: "Codebase knowledge graph",
-      url: null,
-      domain: "internal",
-      healthUrl: null,
+      url: "https://mcp.nevollo.com",
+      domain: "mcp.nevollo.com",
+      healthUrl: "https://mcp.nevollo.com",
       icon: "/icons/nxcontext.svg",
       color: "emerald",
       tags: ["dev-tools", "search"],

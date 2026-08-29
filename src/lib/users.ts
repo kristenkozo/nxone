@@ -7,7 +7,25 @@ export interface StoredUser {
   passwordHash: string;
   salt: string;
   role: "admin" | "member";
+  firstName?: string;
+  lastName?: string;
   createdAt: string;
+}
+
+export interface UserProfile {
+  username: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
+
+export function toProfile(user: StoredUser): UserProfile {
+  return {
+    username: user.username,
+    firstName: user.firstName ?? "",
+    lastName: user.lastName ?? "",
+    role: user.role,
+  };
 }
 
 const DB_PATH = process.env.NXONE_DB_PATH || "/data/users.json";
@@ -84,6 +102,19 @@ export function createUser(
   users.push(newUser);
   writeDb(users);
   return newUser;
+}
+
+export function updateUser(
+  username: string,
+  updates: { firstName?: string; lastName?: string },
+): StoredUser | null {
+  const users = getUsers();
+  const user = users.find((u) => u.username === username);
+  if (!user) return null;
+  if (updates.firstName !== undefined) user.firstName = updates.firstName;
+  if (updates.lastName !== undefined) user.lastName = updates.lastName;
+  writeDb(users);
+  return user;
 }
 
 export function deleteUser(username: string): boolean {

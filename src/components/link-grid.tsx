@@ -21,11 +21,12 @@ export function LinkGrid() {
   useEffect(() => {
     if (authLoading) return;
 
-    if (user && SEED_SERVICES[user]) {
-      seedIfEmpty(SEED_SERVICES[user], user);
+    const uid = user?.username ?? null;
+    if (uid && SEED_SERVICES[uid]) {
+      seedIfEmpty(SEED_SERVICES[uid], uid);
     }
 
-    setServices(getServices(user));
+    setServices(getServices(uid));
     setMounted(true);
   }, [user, authLoading]);
 
@@ -41,20 +42,22 @@ export function LinkGrid() {
     [services, activeGroup],
   );
 
-  const refresh = useCallback(() => setServices(getServices(user)), [user]);
+  const uid = user?.username ?? null;
+
+  const refresh = useCallback(() => setServices(getServices(uid)), [uid]);
 
   const handleSave = useCallback(
     (data: { name: string; url: string; favicon: string | null; group: string }) => {
       if (editing) {
-        updateService(editing.id, data, user);
+        updateService(editing.id, data, uid);
       } else {
-        addService(data, user);
+        addService(data, uid);
       }
       refresh();
       setDialogOpen(false);
       setEditing(null);
     },
-    [editing, refresh, user],
+    [editing, refresh, uid],
   );
 
   const handleEdit = useCallback((service: CustomService) => {
@@ -65,10 +68,10 @@ export function LinkGrid() {
   const handleDelete = useCallback(
     (id: string) => {
       if (!confirm("Remove this service?")) return;
-      deleteService(id, user);
+      deleteService(id, uid);
       refresh();
     },
-    [refresh, user],
+    [refresh, uid],
   );
 
   const handleAdd = useCallback(() => {

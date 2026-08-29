@@ -175,7 +175,7 @@ export default function MembersPage() {
                   {member.role === "admin" ? <Shield size={11} /> : <User size={11} />}
                   {member.role === "admin" ? "Admin" : "Member"}
                 </span>
-                {member.username !== user && (
+                {member.username !== user?.username && (
                   <button
                     onClick={() => handleDelete(member.username)}
                     className="rounded-lg p-1.5 text-subtle-foreground transition-colors hover:text-destructive"

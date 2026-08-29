@@ -104,7 +104,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <div className="flex items-center gap-2">
                 <span className="flex items-center gap-1.5 rounded-full bg-surface-sunken px-3 py-1.5 text-xs font-medium text-muted-foreground">
                   <User className="size-3.5" />
-                  {user}
+                  {user.firstName && user.lastName
+                    ? `${user.firstName} ${user.lastName}`
+                    : user.username}
                 </span>
                 <button
                   onClick={logout}
