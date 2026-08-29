@@ -91,6 +91,8 @@ const stats = [
   { value: "99.98%", label: "Trailing 90-day fleet uptime" },
 ];
 
+export const dynamic = "force-dynamic";
+
 export default async function LandingPage() {
   const products = getVisibleProducts();
   return (
