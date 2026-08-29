@@ -54,8 +54,7 @@ export function MarketingFooter() {
                 { label: "Docs", href: "/#docs" },
                 { label: "FAQ", href: "/#faq" },
                 { label: "Changelog", href: "/#changelog" },
-                { label: "Launcher", href: "/launcher" },
-                { label: "Admin console", href: "/admin" },
+                { label: "Sign in", href: "/login" },
               ].map((l) => (
                 <li key={l.label}>
                   <Link
@@ -79,7 +78,7 @@ export function MarketingFooter() {
                 { label: "Careers", href: "/" },
                 { label: "Newsroom", href: "/" },
                 { label: "Contact", href: "/" },
-                { label: "Status", href: "/admin" },
+                { label: "Status", href: "/login" },
               ].map((l) => (
                 <li key={l.label}>
                   <Link

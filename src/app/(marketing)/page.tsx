@@ -131,10 +131,10 @@ export default function LandingPage() {
               style={{ animationDelay: "140ms" }}
             >
               <Link
-                href="/launcher"
+                href="/login"
                 className="interactive inline-flex h-11 items-center gap-2 rounded-lg bg-foreground px-5 text-sm font-semibold text-background shadow-md hover:opacity-90 active:scale-[0.97]"
               >
-                Explore nxOne
+                Sign in to nxOne
                 <ArrowRight className="size-4" />
               </Link>
               <Link
@@ -190,7 +190,7 @@ export default function LandingPage() {
               </p>
             </div>
             <Link
-              href="/launcher"
+              href="/login"
               className="hidden items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary-hover md:inline-flex"
             >
               All brands <ArrowRight className="size-3.5" />
@@ -293,17 +293,17 @@ export default function LandingPage() {
             </ul>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href="/launcher"
+                href="/login"
                 className="interactive inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover active:scale-[0.97]"
               >
-                Why nxOne
+                Get started
                 <ArrowRight className="size-3.5" />
               </Link>
               <Link
-                href="/launcher"
+                href="#brands"
                 className="inline-flex h-10 items-center rounded-lg border border-border px-5 text-sm font-semibold hover:bg-secondary"
               >
-                Open the launcher
+                Learn more
               </Link>
             </div>
           </div>
@@ -442,7 +442,7 @@ export default function LandingPage() {
               each with the probe contract, automations and rollout they used.
             </p>
             <Link
-              href="/launcher"
+              href="/login"
               className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary-hover"
             >
               Read the case studies
@@ -455,8 +455,8 @@ export default function LandingPage() {
       {/* ── CTA band ────────────────────────────────────── */}
       <CTABand
         title="Start where your team already works"
-        body="Open nxOne, find the app you need, and get on with it. Everything else — health, access, history — is already handled."
-        primary={{ label: "Open nxOne", href: "/launcher" }}
+        body="Sign in to nxOne, find the app you need, and get on with it. Everything else — health, access, history — is already handled."
+        primary={{ label: "Sign in", href: "/login" }}
         secondary={{ label: "See pricing", href: "/#pricing" }}
       />
     </MarketingPage>

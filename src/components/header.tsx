@@ -28,12 +28,14 @@ export function Header() {
               >
                 Launcher
               </Link>
-              <Link
-                href="/admin"
-                className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                Admin
-              </Link>
+              {user && (
+                <Link
+                  href="/admin"
+                  className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                >
+                  Admin
+                </Link>
+              )}
             </nav>
           </div>
 

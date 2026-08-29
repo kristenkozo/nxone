@@ -134,9 +134,9 @@ const companyGroups = [
     items: [
       {
         label: "System status",
-        href: "/admin",
+        href: "/login",
         icon: Activity,
-        desc: "Live availability for every Nevollo service.",
+        desc: "Sign in to view live availability for every Nevollo service.",
       },
       {
         label: "Trust center",
@@ -192,49 +192,38 @@ export function MarketingNav() {
                 {trigger("nxone", "nxOne")}
                 {trigger("brands", "Brands")}
                 {trigger("company", "Company")}
-                <Link
-                  href="/launcher"
-                  className="rounded-lg px-3 py-2 text-[15px] font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
-                >
-                  Launcher
-                </Link>
               </nav>
             </div>
 
             <div className="flex items-center gap-1.5">
-              <Link
-                href="/admin"
-                className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
-              >
-                Admin
-              </Link>
               {!loading && (
                 <>
                   {user ? (
-                    <button
-                      type="button"
-                      onClick={logout}
-                      className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
-                    >
-                      Sign out
-                    </button>
+                    <>
+                      <Link
+                        href="/launcher"
+                        className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
+                      >
+                        Launcher
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={logout}
+                        className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
+                      >
+                        Sign out
+                      </button>
+                    </>
                   ) : (
                     <Link
                       href="/login"
-                      className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
+                      className="interactive ml-2 hidden h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-hover hover:shadow-md active:scale-[0.97] sm:inline-flex"
                     >
                       Sign in
                     </Link>
                   )}
                 </>
               )}
-
-              <Link
-                href="/launcher"
-                className="interactive ml-2 hidden h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-hover hover:shadow-md active:scale-[0.97] sm:inline-flex"
-              >
-                Get started
-              </Link>
               <button
                 type="button"
                 aria-label="Toggle menu"
@@ -330,11 +319,11 @@ export function MarketingNav() {
                         health in minutes.
                       </p>
                       <Link
-                        href="/launcher"
+                        href="/login"
                         onClick={() => setMenu(null)}
                         className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-primary transition-colors hover:text-primary-hover"
                       >
-                        Get started
+                        Sign in
                         <ArrowRight className="size-3.5" />
                       </Link>
                     </div>
@@ -410,8 +399,6 @@ export function MarketingNav() {
                 { label: "Brands", href: "/" },
                 { label: "nxOne Overview", href: "/" },
                 { label: "Features", href: "/#features" },
-                { label: "Launcher", href: "/launcher" },
-                { label: "Admin console", href: "/admin" },
                 { label: "About", href: "/" },
                 { label: "Contact", href: "/" },
               ].map((item) => (
