@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth-provider";
 import { LoginDialog } from "@/components/login-dialog";
@@ -16,15 +16,13 @@ import {
   Users,
   ScrollText,
   Settings,
-  Search,
-  Bell,
   LogOut,
+  User,
   Menu,
   X,
-  ArrowLeft,
 } from "lucide-react";
 
-const sidebarItems = [
+const navItems = [
   { key: "overview", label: "Overview", icon: LayoutDashboard, href: "/admin" },
   { key: "products", label: "Products", icon: Box, href: "/admin/products" },
   { key: "services", label: "Services", icon: Server, href: "/admin/services" },
@@ -37,6 +35,7 @@ const sidebarItems = [
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const { user, loading, logout } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
   const [loginOpen, setLoginOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -50,7 +49,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             Sign in to access the nxOne admin panel.
           </p>
           <button
-            onClick={() => setLoginOpen(true)}
+            onClick={() => router.push("/login")}
             className="rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
           >
             Sign In
@@ -70,101 +69,105 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   const activeKey =
-    sidebarItems.find((item) => item.href === pathname)?.key ?? "overview";
+    navItems.find((item) => item.href === pathname)?.key ?? "overview";
 
   return (
-    <div className="flex min-h-screen bg-surface-sunken">
-      <aside className="hidden w-56 shrink-0 border-r border-border bg-card lg:block">
-        <div className="flex h-full flex-col">
-          <div className="flex items-center gap-2 border-b border-border px-4 py-4">
-            <Link href="/" className="flex items-center gap-2">
-              <NevolloIcon size={28} />
-              <span className="font-display text-sm font-semibold tracking-tight">
-                nxOne
-              </span>
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border bg-background/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+          <div className="flex items-center gap-6">
+            <Link href="/" className="group flex items-center">
+              <NevolloIcon size={36} className="transition-transform group-hover:scale-105" />
             </Link>
-            <span className="rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-              Admin
-            </span>
+            <span className="hidden h-6 w-px bg-border sm:block" />
+            <nav className="hidden items-center gap-1 sm:flex">
+              <Link
+                href="/launcher"
+                className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              >
+                Launcher
+              </Link>
+              <Link
+                href="/admin"
+                className="rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-foreground"
+              >
+                Admin
+              </Link>
+            </nav>
           </div>
 
-          <nav className="flex-1 space-y-0.5 p-2">
-            {sidebarItems.map((item) => {
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            {user && (
+              <div className="flex items-center gap-2">
+                <span className="flex items-center gap-1.5 rounded-full bg-surface-sunken px-3 py-1.5 text-xs font-medium text-muted-foreground">
+                  <User className="size-3.5" />
+                  {user}
+                </span>
+                <button
+                  onClick={logout}
+                  className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  title="Sign out"
+                >
+                  <LogOut className="size-4" />
+                </button>
+              </div>
+            )}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary sm:hidden"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Tab strip */}
+      <div className="border-b border-border bg-background">
+        <div className="mx-auto max-w-6xl px-6">
+          <nav className="hidden items-center gap-1 overflow-x-auto sm:flex" role="tablist">
+            {navItems.map((item) => {
               const Icon = item.icon;
               const active = item.key === activeKey;
               return (
                 <Link
                   key={item.key}
                   href={item.href}
+                  role="tab"
+                  aria-selected={active}
                   className={cn(
-                    "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors",
+                    "relative flex items-center gap-2 whitespace-nowrap px-3 py-3 text-sm font-medium transition-colors",
                     active
-                      ? "bg-primary/10 font-medium text-primary"
-                      : "text-muted-foreground hover:bg-surface-sunken hover:text-foreground",
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
-                  <Icon size={16} />
+                  <Icon size={15} />
                   {item.label}
+                  {active && (
+                    <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
+                  )}
                 </Link>
               );
             })}
           </nav>
+        </div>
+      </div>
 
-          <div className="border-t border-border p-3">
+      {/* Mobile nav dropdown */}
+      {mobileOpen && (
+        <div className="border-b border-border bg-background p-2 sm:hidden">
+          <nav className="space-y-0.5">
             <Link
               href="/launcher"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary"
             >
-              <ArrowLeft size={14} />
-              Back to Launcher
+              Launcher
             </Link>
-          </div>
-        </div>
-      </aside>
-
-      <div className="flex flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-card px-4 py-3 lg:px-6">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="rounded-lg p-1.5 text-muted-foreground lg:hidden"
-            >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-            <div className="hidden items-center gap-2 rounded-lg bg-surface-sunken px-3 py-1.5 sm:flex">
-              <Search size={14} className="text-subtle-foreground" />
-              <span className="text-xs text-subtle-foreground">Search...</span>
-              <kbd className="rounded border border-border bg-card px-1.5 py-0.5 text-[10px] text-subtle-foreground">
-                /
-              </kbd>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <button className="relative rounded-lg p-1.5 text-muted-foreground transition-colors hover:text-foreground">
-              <Bell size={16} />
-            </button>
-            {user && (
-              <div className="flex items-center gap-1.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                  {user.slice(0, 2).toUpperCase()}
-                </div>
-                <button
-                  onClick={logout}
-                  className="rounded-lg p-1.5 text-subtle-foreground transition-colors hover:text-foreground"
-                  title="Sign out"
-                >
-                  <LogOut size={14} />
-                </button>
-              </div>
-            )}
-          </div>
-        </header>
-
-        {mobileOpen && (
-          <div className="border-b border-border bg-card p-2 lg:hidden">
-            {sidebarItems.map((item) => {
+            {navItems.map((item) => {
               const Icon = item.icon;
               const active = item.key === activeKey;
               return (
@@ -175,8 +178,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors",
                     active
-                      ? "bg-primary/10 font-medium text-primary"
-                      : "text-muted-foreground hover:bg-surface-sunken",
+                      ? "bg-secondary font-medium text-foreground"
+                      : "text-muted-foreground hover:bg-secondary hover:text-foreground",
                   )}
                 >
                   <Icon size={16} />
@@ -184,11 +187,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 </Link>
               );
             })}
-          </div>
-        )}
+          </nav>
+        </div>
+      )}
 
-        <main className="flex-1 p-4 lg:p-6">{children}</main>
-      </div>
+      <main className="mx-auto max-w-6xl px-6 py-8">{children}</main>
     </div>
   );
 }
@@ -203,11 +206,9 @@ export function PageHeader({
   actions?: React.ReactNode;
 }) {
   return (
-    <div className="mb-6 flex items-start justify-between">
+    <div className="mb-8 flex items-start justify-between">
       <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight">
-          {title}
-        </h1>
+        <h1 className="text-2xl font-bold">{title}</h1>
         {description && (
           <p className="mt-1 text-sm text-muted-foreground">{description}</p>
         )}
