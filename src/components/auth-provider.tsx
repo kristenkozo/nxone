@@ -6,6 +6,9 @@ export interface UserProfile {
   username: string;
   firstName: string;
   lastName: string;
+  email: string;
+  title: string;
+  avatar: string | null;
   role: string;
 }
 
@@ -14,7 +17,7 @@ interface AuthState {
   loading: boolean;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
-  updateProfile: (data: { firstName?: string; lastName?: string }) => Promise<boolean>;
+  updateProfile: (data: { firstName?: string; lastName?: string; email?: string; title?: string; avatar?: string }) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthState>({
@@ -54,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   }, []);
 
-  const updateProfile = useCallback(async (data: { firstName?: string; lastName?: string }) => {
+  const updateProfile = useCallback(async (data: { firstName?: string; lastName?: string; email?: string; title?: string; avatar?: string }) => {
     const res = await fetch("/api/auth/me", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

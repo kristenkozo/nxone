@@ -19,11 +19,14 @@ export async function PUT(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { firstName, lastName } = body;
+  const { firstName, lastName, email, title, avatar } = body;
 
   const updated = updateUser(username, {
     firstName: typeof firstName === "string" ? firstName.trim() : undefined,
     lastName: typeof lastName === "string" ? lastName.trim() : undefined,
+    email: typeof email === "string" ? email.trim() : undefined,
+    title: typeof title === "string" ? title.trim() : undefined,
+    avatar: typeof avatar === "string" ? avatar : undefined,
   });
 
   if (!updated) {

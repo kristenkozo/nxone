@@ -1,4 +1,5 @@
 export type { StoredProduct } from "@/lib/product-store";
+export type { StoredService } from "@/lib/service-store-server";
 export type { UserProfile } from "@/lib/users";
 
 export type AppStatus = "up" | "degraded" | "down" | "unknown";

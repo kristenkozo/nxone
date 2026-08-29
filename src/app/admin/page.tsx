@@ -27,6 +27,7 @@ function generateSparkData(len = 12) {
 
 export default function AdminOverview() {
   const [products, setProducts] = useState<StoredProduct[]>([]);
+  const [serviceCount, setServiceCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [statuses, setStatuses] = useState<Record<string, AppStatus>>({});
   const [sparkData, setSparkData] = useState<Record<string, number[]>>({});
@@ -35,19 +36,26 @@ export default function AdminOverview() {
     let cancelled = false;
     async function load() {
       try {
-        const res = await fetch("/api/products");
-        if (!res.ok) return;
-        const data: { products: StoredProduct[] } = await res.json();
-        if (!cancelled) {
-          setProducts(data.products);
-          setSparkData(
-            Object.fromEntries(
-              data.products.map((p) => [p.id, generateSparkData()]),
-            ),
-          );
+        const [prodRes, svcRes] = await Promise.all([
+          fetch("/api/products"),
+          fetch("/api/services"),
+        ]);
+        if (prodRes.ok) {
+          const data: { products: StoredProduct[] } = await prodRes.json();
+          if (!cancelled) {
+            setProducts(data.products);
+            setSparkData(
+              Object.fromEntries(
+                data.products.map((p) => [p.id, generateSparkData()]),
+              ),
+            );
+          }
+        }
+        if (svcRes.ok) {
+          const svcData = await svcRes.json();
+          if (!cancelled) setServiceCount(svcData.services?.length ?? 0);
         }
       } catch {
-        // Keep empty on error
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -96,7 +104,7 @@ export default function AdminOverview() {
     },
     {
       label: "Internal Services",
-      value: 21,
+      value: serviceCount,
       icon: Server,
       accent: "border-l-brand-violet",
       iconBg: "bg-brand-violet/10 text-brand-violet",

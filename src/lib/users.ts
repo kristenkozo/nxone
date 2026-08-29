@@ -9,6 +9,9 @@ export interface StoredUser {
   role: "admin" | "member";
   firstName?: string;
   lastName?: string;
+  email?: string;
+  title?: string;
+  avatar?: string;
   createdAt: string;
 }
 
@@ -16,6 +19,9 @@ export interface UserProfile {
   username: string;
   firstName: string;
   lastName: string;
+  email: string;
+  title: string;
+  avatar: string | null;
   role: string;
 }
 
@@ -24,6 +30,9 @@ export function toProfile(user: StoredUser): UserProfile {
     username: user.username,
     firstName: user.firstName ?? "",
     lastName: user.lastName ?? "",
+    email: user.email ?? "",
+    title: user.title ?? "",
+    avatar: user.avatar ?? null,
     role: user.role,
   };
 }
@@ -106,13 +115,16 @@ export function createUser(
 
 export function updateUser(
   username: string,
-  updates: { firstName?: string; lastName?: string },
+  updates: { firstName?: string; lastName?: string; email?: string; title?: string; avatar?: string },
 ): StoredUser | null {
   const users = getUsers();
   const user = users.find((u) => u.username === username);
   if (!user) return null;
   if (updates.firstName !== undefined) user.firstName = updates.firstName;
   if (updates.lastName !== undefined) user.lastName = updates.lastName;
+  if (updates.email !== undefined) user.email = updates.email;
+  if (updates.title !== undefined) user.title = updates.title;
+  if (updates.avatar !== undefined) user.avatar = updates.avatar;
   writeDb(users);
   return user;
 }
