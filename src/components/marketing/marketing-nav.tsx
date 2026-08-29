@@ -215,12 +215,20 @@ export function MarketingNav() {
                       </button>
                     </>
                   ) : (
-                    <Link
-                      href="/login"
-                      className="interactive ml-2 hidden h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-hover hover:shadow-md active:scale-[0.97] sm:inline-flex"
-                    >
-                      Sign in
-                    </Link>
+                    <>
+                      <Link
+                        href="/login"
+                        className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
+                      >
+                        Sign in
+                      </Link>
+                      <Link
+                        href="/login"
+                        className="interactive ml-2 hidden h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-hover hover:shadow-md active:scale-[0.97] sm:inline-flex"
+                      >
+                        Get started
+                      </Link>
+                    </>
                   )}
                 </>
               )}
