@@ -229,12 +229,6 @@ export function MarketingNav() {
                 <>
                   {user ? (
                     <>
-                      <Link
-                        href="/launcher"
-                        className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
-                      >
-                        Launcher
-                      </Link>
                       <button
                         type="button"
                         onClick={logout}
@@ -242,6 +236,13 @@ export function MarketingNav() {
                       >
                         Sign out
                       </button>
+                      <Link
+                        href="/launcher"
+                        className="interactive ml-1 hidden h-9 items-center justify-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-hover hover:shadow-md active:scale-[0.97] sm:inline-flex"
+                      >
+                        <LayoutGrid className="size-3.5" />
+                        Launcher
+                      </Link>
                     </>
                   ) : (
                     <>
