@@ -1,12 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth-provider";
 import { LoginDialog } from "@/components/login-dialog";
 import { NevolloIcon } from "@/components/nevollo-icon";
-import { brands, brandIconBg } from "@/lib/brands";
+import { brandIconBg } from "@/lib/brands";
+
+interface BrandItem {
+  slug: string;
+  name: string;
+  tagline: string;
+  initials: string;
+  color: string;
+  url: string | null;
+}
 import {
   Activity,
   ArrowRight,
@@ -155,6 +164,26 @@ export function MarketingNav() {
   const [menu, setMenu] = useState<"brands" | "nxone" | "company" | null>(
     null,
   );
+  const [brands, setBrands] = useState<BrandItem[]>([]);
+
+  useEffect(() => {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        const items: BrandItem[] = (data.products ?? []).map(
+          (p: { id: string; name: string; tagline: string; initials: string; color: string; url: string | null }) => ({
+            slug: p.id,
+            name: p.name,
+            tagline: p.tagline,
+            initials: p.initials,
+            color: p.color,
+            url: p.url,
+          }),
+        );
+        setBrands(items);
+      })
+      .catch(() => {});
+  }, []);
 
   const trigger = (id: "brands" | "nxone" | "company", label: string) => (
     <button

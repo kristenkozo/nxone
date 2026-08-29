@@ -1,4 +1,4 @@
-import { apps } from "./apps";
+import { getProducts } from "./product-store";
 import type { AppStatus, AppStatusResult, StatusResponse } from "@/types";
 
 const CACHE_TTL_MS = 30_000;
@@ -64,15 +64,17 @@ export async function getStatus(): Promise<StatusResponse> {
     return { ...cachedResponse, cached: true };
   }
 
+  const products = getProducts();
+
   const results = await Promise.allSettled(
-    apps.map((app) => probeApp(app.healthUrl, app.id)),
+    products.map((p) => probeApp(p.healthUrl, p.id)),
   );
 
   const appStatuses: AppStatusResult[] = results.map((result, i) =>
     result.status === "fulfilled"
       ? result.value
       : {
-          id: apps[i].id,
+          id: products[i].id,
           status: "down" as AppStatus,
           latencyMs: 0,
           lastChecked: new Date().toISOString(),

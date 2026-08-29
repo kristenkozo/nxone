@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { apps, brandIconBg } from "@/lib/apps";
+import { brandIconBg } from "@/lib/apps";
 import { cn } from "@/lib/utils";
-import type { AppStatus, StatusResponse } from "@/types";
+import type { AppStatus, StatusResponse, StoredProduct } from "@/types";
 import { PageHeader, Panel, StatusPill } from "@/components/admin/admin-shell";
 import { Sparkline } from "@/components/admin/sparkline";
-import { Box, Activity, Server, ArrowUpRight } from "lucide-react";
+import { Box, Activity, Server, ArrowUpRight, Loader2 } from "lucide-react";
 
 function generateSparkData(len = 12) {
   const base = 90 + Math.random() * 10;
@@ -16,10 +16,35 @@ function generateSparkData(len = 12) {
 }
 
 export default function AdminOverview() {
+  const [products, setProducts] = useState<StoredProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const [statuses, setStatuses] = useState<Record<string, AppStatus>>({});
-  const [sparkData] = useState(() =>
-    Object.fromEntries(apps.map((app) => [app.id, generateSparkData()])),
-  );
+  const [sparkData, setSparkData] = useState<Record<string, number[]>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const res = await fetch("/api/products");
+        if (!res.ok) return;
+        const data: { products: StoredProduct[] } = await res.json();
+        if (!cancelled) {
+          setProducts(data.products);
+          setSparkData(
+            Object.fromEntries(
+              data.products.map((p) => [p.id, generateSparkData()]),
+            ),
+          );
+        }
+      } catch {
+        // Keep empty on error
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const fetchStatus = useCallback(async () => {
     try {
@@ -39,7 +64,7 @@ export default function AdminOverview() {
   }, [fetchStatus]);
 
   const operational = Object.values(statuses).filter((s) => s === "up").length;
-  const total = apps.length;
+  const total = products.length;
 
   const stats = [
     { label: "Total Products", value: total, icon: Box },
@@ -75,55 +100,62 @@ export default function AdminOverview() {
       </div>
 
       <Panel title="Products">
-        <div className="divide-y divide-border">
-          {apps.map((app) => {
-            const status = statuses[app.id] ?? "unknown";
-            const bg = brandIconBg[app.color] ?? "bg-brand-blue";
-            const spark = sparkData[app.id] ?? [];
-            const tone =
-              status === "up"
-                ? "up"
-                : status === "degraded"
-                  ? "degraded"
-                  : status === "down"
-                    ? "down"
-                    : "neutral";
+        {loading ? (
+          <div className="flex items-center justify-center py-8 text-muted-foreground">
+            <Loader2 size={20} className="animate-spin" />
+            <span className="ml-2 text-sm">Loading products...</span>
+          </div>
+        ) : (
+          <div className="divide-y divide-border">
+            {products.map((app) => {
+              const status = statuses[app.id] ?? "unknown";
+              const bg = brandIconBg[app.color] ?? "bg-brand-blue";
+              const spark = sparkData[app.id] ?? [];
+              const tone =
+                status === "up"
+                  ? "up"
+                  : status === "degraded"
+                    ? "degraded"
+                    : status === "down"
+                      ? "down"
+                      : "neutral";
 
-            return (
-              <div
-                key={app.id}
-                className="flex items-center gap-4 py-3 first:pt-0 last:pb-0"
-              >
+              return (
                 <div
-                  className={cn(
-                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white",
-                    bg,
-                  )}
+                  key={app.id}
+                  className="flex items-center gap-4 py-3 first:pt-0 last:pb-0"
                 >
-                  {app.initials}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium">{app.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">
-                    {app.domain}
-                  </p>
-                </div>
-                <Sparkline data={spark} tone={tone} className="hidden sm:inline-block" />
-                <StatusPill status={status} />
-                {app.url && (
-                  <a
-                    href={app.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-lg p-1.5 text-subtle-foreground transition-colors hover:text-foreground"
+                  <div
+                    className={cn(
+                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-bold text-white",
+                      bg,
+                    )}
                   >
-                    <ArrowUpRight size={14} />
-                  </a>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                    {app.initials}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium">{app.name}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {app.domain}
+                    </p>
+                  </div>
+                  <Sparkline data={spark} tone={tone} className="hidden sm:inline-block" />
+                  <StatusPill status={status} />
+                  {app.url && (
+                    <a
+                      href={app.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-lg p-1.5 text-subtle-foreground transition-colors hover:text-foreground"
+                    >
+                      <ArrowUpRight size={14} />
+                    </a>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </Panel>
     </>
   );

@@ -16,6 +16,7 @@ import {
   Users,
   ScrollText,
   Settings,
+  Wrench,
   LogOut,
   User,
   Menu,
@@ -30,6 +31,7 @@ const navItems = [
   { key: "members", label: "Members", icon: Users, href: "/admin/members" },
   { key: "audit", label: "Audit Log", icon: ScrollText, href: "/admin/audit" },
   { key: "settings", label: "Settings", icon: Settings, href: "/admin/settings" },
+  { key: "operator", label: "Operator", icon: Wrench, href: "/admin/operator" },
 ];
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
@@ -127,7 +129,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       {/* Tab strip */}
       <div className="border-b border-border bg-background">
         <div className="mx-auto max-w-6xl px-6">
-          <nav className="hidden items-center gap-1 overflow-x-auto sm:flex" role="tablist">
+          <nav className="-mb-px hidden items-center gap-1 sm:flex" role="tablist">
             {navItems.map((item) => {
               const Icon = item.icon;
               const active = item.key === activeKey;

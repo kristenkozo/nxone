@@ -1,3 +1,5 @@
+export type { StoredProduct } from "@/lib/product-store";
+
 export type AppStatus = "up" | "degraded" | "down" | "unknown";
 
 export interface AppDefinition {

@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { NevolloIcon } from "@/components/nevollo-icon";
-import { brands } from "@/lib/brands";
+import { getVisibleProducts } from "@/lib/product-store";
 
 export function MarketingFooter() {
+  const brands = getVisibleProducts().map((p) => ({
+    slug: p.id,
+    name: p.name,
+    url: p.url,
+  }));
   return (
     <footer className="border-t border-border bg-surface">
       <div className="mx-auto max-w-6xl px-6 py-16">

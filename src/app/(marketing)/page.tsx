@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { MarketingPage, CTABand } from "@/components/marketing/section";
 import { ConsoleMock } from "@/components/marketing/console-mock";
-import { apps, brandIconBg } from "@/lib/apps";
+import { brandIconBg } from "@/lib/apps";
+import { getVisibleProducts } from "@/lib/product-store";
 import { cn } from "@/lib/utils";
 import {
   ArrowRight,
@@ -19,16 +20,6 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
-
-const categoryLabel: Record<string, string> = {
-  dxdata: "Data platform",
-  voulix: "CRM",
-  nxmcp: "Developer platform",
-  nxcontext: "Developer tools",
-  nxmail: "Email infrastructure",
-  nxtransit: "Transit",
-  neurave: "Neuroscience platform",
-};
 
 const nxoneFeatures = [
   "Unified launcher for products and 30+ internal services.",
@@ -100,7 +91,8 @@ const stats = [
   { value: "99.98%", label: "Trailing 90-day fleet uptime" },
 ];
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const products = getVisibleProducts();
   return (
     <MarketingPage>
       {/* ── Hero ─────────────────────────────────────────── */}
@@ -198,16 +190,16 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {apps.map((app, i) => {
-              const bg = brandIconBg[app.color] ?? "bg-brand-blue";
-              const clickable = app.url !== null;
+            {products.map((product, i) => {
+              const bg = brandIconBg[product.color] ?? "bg-brand-blue";
+              const clickable = product.url !== null;
               const Tag = clickable ? "a" : "div";
               return (
                 <Tag
-                  key={app.id}
+                  key={product.id}
                   {...(clickable
                     ? {
-                        href: app.url!,
+                        href: product.url!,
                         target: "_blank",
                         rel: "noreferrer",
                       }
@@ -226,14 +218,14 @@ export default function LandingPage() {
                         bg,
                       )}
                     >
-                      {app.initials}
+                      {product.initials}
                     </span>
                     <span className="text-xs font-medium text-muted-foreground">
-                      {categoryLabel[app.id] ?? "Platform"}
+                      {product.category}
                     </span>
                   </div>
                   <h3 className="mt-4 flex items-center gap-1.5 text-base font-semibold">
-                    {app.name}
+                    {product.name}
                     {clickable ? (
                       <ArrowUpRight className="size-3.5 text-subtle-foreground opacity-0 transition-opacity group-hover:opacity-100" />
                     ) : (
@@ -241,13 +233,13 @@ export default function LandingPage() {
                     )}
                   </h3>
                   <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">
-                    {app.description}
+                    {product.description}
                   </p>
                   <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3">
                     <span className="font-mono text-[11px] text-subtle-foreground">
-                      {app.domain}
+                      {product.domain}
                     </span>
-                    {app.tags.map((tag) => (
+                    {product.tags.map((tag) => (
                       <span
                         key={tag}
                         className="rounded-full bg-accent px-2 py-0.5 text-[11px] font-medium text-accent-foreground"
