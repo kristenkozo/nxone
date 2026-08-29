@@ -120,7 +120,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Tab strip — recessed pill nav */}
-          <div className="hidden pb-2 sm:block">
+          <div className="hidden pb-2 sm:flex sm:justify-center">
             <nav
               className="inline-flex items-center gap-0.5 rounded-lg bg-surface-sunken p-1"
               role="tablist"
