@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/auth-provider";
 import { LoginDialog } from "@/components/login-dialog";
 import { NevolloIcon } from "@/components/nevollo-icon";
+import { UserMenu } from "@/components/user-menu";
 import { brandIconBg } from "@/lib/brands";
 
 interface BrandItem {
@@ -158,7 +159,7 @@ const companyGroups = [
 ];
 
 export function MarketingNav() {
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout, updateProfile } = useAuth();
   const [loginOpen, setLoginOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [menu, setMenu] = useState<"brands" | "nxone" | "company" | null>(
@@ -229,13 +230,14 @@ export function MarketingNav() {
                 <>
                   {user ? (
                     <>
-                      <button
-                        type="button"
-                        onClick={logout}
-                        className="hidden rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all hover:bg-secondary hover:text-foreground lg:inline-flex"
-                      >
-                        Sign out
-                      </button>
+                      <div className="hidden sm:block">
+                        <UserMenu
+                          user={user}
+                          logout={logout}
+                          updateProfile={updateProfile}
+                          variant="square"
+                        />
+                      </div>
                       <Link
                         href="/launcher"
                         className="interactive ml-1 hidden h-9 items-center justify-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary-hover hover:shadow-md active:scale-[0.97] sm:inline-flex"
