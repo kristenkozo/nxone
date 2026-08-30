@@ -107,6 +107,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   user={user}
                   logout={logout}
                   updateProfile={updateProfile}
+                  variant="square"
                 />
               )}
               <button

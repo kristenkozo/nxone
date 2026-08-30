@@ -75,6 +75,7 @@ export function UserMenu({
   user,
   logout,
   updateProfile,
+  variant = "rounded",
 }: {
   user: UserProfile;
   logout: () => void;
@@ -85,6 +86,7 @@ export function UserMenu({
     title?: string;
     avatar?: string;
   }) => Promise<boolean | void>;
+  variant?: "rounded" | "square";
 }) {
   const { theme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -155,7 +157,10 @@ export function UserMenu({
           setEditMode(false);
         }}
         className={cn(
-          "flex items-center gap-2 rounded-full py-1 pl-1 pr-2.5 transition-colors hover:bg-secondary",
+          "flex items-center gap-2 transition-colors hover:bg-secondary",
+          variant === "square"
+            ? "rounded-lg px-2.5 py-1.5"
+            : "rounded-full py-1 pl-1 pr-2.5",
           menuOpen && "bg-secondary",
         )}
       >
