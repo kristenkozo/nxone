@@ -76,7 +76,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       {/* Unified header block */}
-      <div className="border-b border-border bg-background/80 backdrop-blur-xl">
+      <div className="relative z-50 border-b border-border bg-background/80 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-6">
           {/* Top bar */}
           <div className="flex h-14 items-center justify-between">
